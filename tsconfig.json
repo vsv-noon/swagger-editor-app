@@ -31,7 +31,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "eslint.config.ts",
-    "check-branch.js"
+    "check-branch.js",
+    "commitlint.config.js"
   ],
   "exclude": ["node_modules"]
 }
