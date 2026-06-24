@@ -1,0 +1,21 @@
+.localeLayout {
+  margin: 0 auto;
+  max-width: rem(1280px);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContainer {
+  display: flex;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+}
+
+.sidebarContent {
+  position: sticky;
+  right: 0;
+}

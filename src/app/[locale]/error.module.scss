@@ -1,0 +1,30 @@
+.errorBoundary {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .title {
+    font-size: rem(30px);
+    line-height: rem(36px);
+    font-weight: 700;
+  }
+
+  .button {
+    height: rem(40px);
+    border-radius: rem(8px);
+    background-color: var(--button-primary-hover);
+    padding: rem(8px) rem(20px);
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    color: var(--background);
+    cursor: pointer;
+  }
+
+  .button:hover {
+    color: var(--text-secondary);
+    background-color: var(--button-secondary-hover);
+  }
+}

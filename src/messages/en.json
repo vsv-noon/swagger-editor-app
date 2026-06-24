@@ -1,0 +1,10 @@
+{
+  "ErrorBoundary": {
+    "title": "Something went wrong!",
+    "button": "Try again"
+  },
+  "NotFound": {
+    "404": "404 - Page Not Found",
+    "home": "Home"
+  }
+}
