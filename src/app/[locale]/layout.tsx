@@ -49,7 +49,7 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Header isAuthenticated={false}></Header>
+          <Header></Header>
           <div className={styles.localeLayout}>
             <div className={styles.mainContainer}>
               <main className={styles.mainContent}>{children}</main>
