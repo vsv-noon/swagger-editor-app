@@ -1,3 +1,9 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
+import { Link } from '@/i18n/navigation';
+
 import styles from './Header.module.scss';
 
 export type HeaderProps = {
@@ -5,11 +11,18 @@ export type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
+  const pathname = usePathname();
+  const isAbout = pathname.includes('/about');
+  const isHistory = pathname.includes('/history');
   if (!isAuthenticated) {
     return (
       <header className={styles.header}>
         <nav className={styles.headerNav}>
-          <a>About</a>
+          {isAbout ? (
+            <Link href="/">Home</Link>
+          ) : (
+            <Link href="/about">About</Link>
+          )}
         </nav>
         <div className={styles.headerButtons}>
           <button className={`${styles.signInButton} ${styles.button}`}>
@@ -22,7 +35,28 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       </header>
     );
   }
-  return <header></header>;
+  return (
+    <header className={styles.header}>
+      <nav className={styles.headerNav}>
+        {isAbout ? (
+          <Link href="/">Home</Link>
+        ) : (
+          <Link href="/about">About</Link>
+        )}
+
+        {isHistory ? (
+          <Link href="/">Home</Link>
+        ) : (
+          <Link href="/history">History</Link>
+        )}
+      </nav>
+      <div className={styles.headerButtons}>
+        <button className={`${styles.signOutButton} ${styles.button}`}>
+          Sign Out
+        </button>
+      </div>
+    </header>
+  );
 };
 
 export default Header;

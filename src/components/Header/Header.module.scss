@@ -1,14 +1,19 @@
 $sign-in-btn-color: #2c9fc7;
 $sign-up-btn-color: #9abf17;
+$sign-out-btn-color: #46334f;
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
+  gap: 1.55rem;
 }
 
 .headerNav {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .headerButtons {
@@ -31,4 +36,10 @@ $sign-up-btn-color: #9abf17;
 .signUpButton {
   color: $sign-up-btn-color;
   border-color: $sign-up-btn-color;
+}
+
+.signOutButton {
+  color: white;
+  border-color: $sign-out-btn-color;
+  background-color: $sign-out-btn-color;
 }
