@@ -19,9 +19,13 @@ const HeaderClient: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       <header className={styles.header}>
         <nav className={styles.headerNav}>
           {isAbout ? (
-            <Link href="/">Home</Link>
+            <Link className={styles.link} href="/">
+              Home
+            </Link>
           ) : (
-            <Link href="/about">About</Link>
+            <Link className={styles.link} href="/about">
+              About
+            </Link>
           )}
         </nav>
         <div className={styles.headerButtons}>
@@ -39,15 +43,23 @@ const HeaderClient: React.FC<HeaderProps> = ({ isAuthenticated }) => {
     <header className={styles.header}>
       <nav className={styles.headerNav}>
         {isAbout ? (
-          <Link href="/">Home</Link>
+          <Link className={styles.link} href="/">
+            Home
+          </Link>
         ) : (
-          <Link href="/about">About</Link>
+          <Link className={styles.link} href="/about">
+            About
+          </Link>
         )}
 
         {isHistory ? (
-          <Link href="/">Home</Link>
+          <Link className={styles.link} href="/">
+            Home
+          </Link>
         ) : (
-          <Link href="/history">History</Link>
+          <Link className={styles.link} href="/history">
+            History
+          </Link>
         )}
       </nav>
       <div className={styles.headerButtons}>

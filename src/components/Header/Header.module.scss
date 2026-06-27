@@ -43,3 +43,9 @@ $sign-out-btn-color: #46334f;
   border-color: $sign-out-btn-color;
   background-color: $sign-out-btn-color;
 }
+
+.link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
