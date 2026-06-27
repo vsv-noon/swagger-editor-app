@@ -1,7 +1,7 @@
 import HeaderClient from './HeaderClient';
 
 const Header = async () => {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   return <HeaderClient isAuthenticated={isAuthenticated}></HeaderClient>;
 };
 
