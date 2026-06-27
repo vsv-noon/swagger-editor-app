@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
+import Header from '@/components/Header/Header';
 import { routing } from '@/i18n/routing';
 
 import styles from './layout.module.scss';
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider messages={messages}>
+          <Header isAuthenticated={false}></Header>
           <div className={styles.localeLayout}>
             <div className={styles.mainContainer}>
               <main className={styles.mainContent}>{children}</main>
