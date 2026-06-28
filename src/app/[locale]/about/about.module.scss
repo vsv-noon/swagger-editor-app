@@ -76,3 +76,97 @@
     }
   }
 }
+.rsSchool {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 auto;
+  .logo {
+    cursor: pointer;
+  }
+
+  .tooltip {
+    position: absolute;
+    left: 60%;
+    bottom: calc(80%);
+    transform: translateX(-50%);
+
+    width: 50%;
+    padding: 12px;
+
+    background: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 16px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+
+    z-index: 100;
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 45%;
+
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid black;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -24px;
+      left: 40%;
+
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid black;
+    }
+    /*&::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+
+      border: 10px solid transparent ;
+      border-top-color: white;
+      
+    }*/ /*
+  &::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border: 11px solid transparent;
+  border-top-color: black;
+}
+
+&::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  border: 10px solid transparent;
+  border-top-color: white;
+}*/
+  }
+
+  &:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+}
