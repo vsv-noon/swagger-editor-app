@@ -1,0 +1,78 @@
+.cardWrapper {
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+  margin-top: 20px;
+  .card {
+    padding: 20px;
+    width: 326px;
+    height: 449px;
+    container-type: inline-size;
+
+    border-top-left-radius: 150px;
+    border-bottom-left-radius: 150px;
+    border-top-right-radius: 150px;
+    border-bottom-right-radius: 150px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 60px;
+    &:nth-child(1) {
+      background-color: #2ca0c77e;
+    }
+
+    &:nth-child(2) {
+      background-color: #efd48e;
+    }
+
+    &:nth-child(3) {
+      background-color: #9bbf1778;
+    }
+    .profilePicture {
+      width: 140px;
+      height: 140px;
+      border-radius: 70px;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      background-size: contain;
+      background-size: cover;
+    }
+    &:nth-child(1) .profilePicture {
+      background-image: url('/about-pictures/viacheslav.jpg');
+    }
+
+    &:nth-child(2) .profilePicture {
+      background-image: url('/about-pictures/nastya.png');
+    }
+
+    &:nth-child(3) .profilePicture {
+      background-image: url('/about-pictures/kate.png');
+    }
+    .git {
+      margin-top: auto;
+
+      p {
+        font-size: 24px;
+
+        .gitLink {
+          color: white;
+        }
+      }
+    }
+    .discription {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+      gap: 20px;
+      h3 {
+        font-size: 27px;
+      }
+      p {
+        font-size: 24px;
+      }
+    }
+  }
+}

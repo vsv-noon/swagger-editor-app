@@ -6,5 +6,12 @@
   "NotFound": {
     "404": "404 - Page Not Found",
     "home": "Home"
+  },
+  "About": {
+    "name-n": "Nastassia Bialova",
+    "name-v": "Viacheslav Anisimov",
+    "name-k": "Katerina Halitsa",
+    "role-1": "teamlead",
+    "role-2": "developer"
   }
 }
