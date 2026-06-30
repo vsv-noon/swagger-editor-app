@@ -56,6 +56,61 @@ export default function Viewer() {
                 </div>
               ))
             )}
+
+            <h4>Request Body</h4>
+
+            {selected.requestBody ? (
+              <>
+                <div>
+                  <b>Content type:</b> {selected.requestBody.contentType}
+                </div>
+
+                <h5>Schema</h5>
+
+                <pre>
+                  {JSON.stringify(selected.requestBody.schema, null, 2)}
+                </pre>
+
+                <h5>Example</h5>
+
+                <pre>
+                  {JSON.stringify(selected.requestBody.example, null, 2)}
+                </pre>
+              </>
+            ) : (
+              <div>No request body</div>
+            )}
+
+            <h4>Responses</h4>
+
+            {selected.responses.map((response) => (
+              <div key={response.statusCode}>
+                <h5>{response.statusCode}</h5>
+
+                <div>{response.description}</div>
+
+                {response.contentType && (
+                  <div>
+                    <b>Content type:</b> {response.contentType}
+                  </div>
+                )}
+
+                {response.schema !== undefined && (
+                  <>
+                    <div>Schema</div>
+                    <pre>{JSON.stringify(response.schema, null, 2)}</pre>
+                  </>
+                )}
+
+                {response.example !== undefined && (
+                  <>
+                    <div>Example</div>
+
+                    <pre>{JSON.stringify(response.example, null, 2)}</pre>
+                  </>
+                )}
+              </div>
+            ))}
           </>
         )}
       </div>
