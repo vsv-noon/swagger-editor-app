@@ -1,5 +1,6 @@
 'use client';
 
+import { User } from '@supabase/supabase-js';
 import { usePathname } from 'next/navigation';
 
 import { Link } from '@/i18n/navigation';
@@ -7,14 +8,14 @@ import { Link } from '@/i18n/navigation';
 import styles from './Header.module.scss';
 
 export type HeaderProps = {
-  isAuthenticated: boolean;
+  user: User | null;
 };
 
-const HeaderClient: React.FC<HeaderProps> = ({ isAuthenticated }) => {
+const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
   const pathname = usePathname();
   const isAbout = pathname.includes('/about');
   const isHistory = pathname.includes('/history');
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       <header className={styles.header}>
         <nav className={styles.headerNav}>

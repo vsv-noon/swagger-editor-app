@@ -1,9 +1,13 @@
 import { redirect } from 'next/navigation';
 
-const HistoryPage = () => {
-  const isAuthenticated = false; // get from supabase/firebase
+import { createClient } from '@/utils/supabase/client';
 
-  if (!isAuthenticated) {
+const HistoryPage = async () => {
+  const supabaseClient = createClient();
+  const {
+    data: { user },
+  } = await supabaseClient.auth.getUser();
+  if (!user) {
     redirect('/');
   }
   return <div>History Page</div>;

@@ -1,8 +1,14 @@
+import { createClient } from '@/utils/supabase/server';
+
 import HeaderClient from './HeaderClient';
 
 const Header = async () => {
-  const isAuthenticated = false;
-  return <HeaderClient isAuthenticated={isAuthenticated}></HeaderClient>;
+  const supabaseClient = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabaseClient.auth.getUser();
+  return <HeaderClient user={user}></HeaderClient>;
 };
 
 export default Header;
