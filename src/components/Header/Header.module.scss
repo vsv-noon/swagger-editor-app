@@ -13,6 +13,7 @@ $sign-out-btn-color: #46334f;
 .headerNav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex: 1;
 }
 
@@ -23,6 +24,7 @@ $sign-out-btn-color: #46334f;
 }
 
 .button {
+  text-decoration: none;
   border-radius: var(--border-radius);
   padding: var(--btn-padding-y) var(--btn-padding-x);
   border: var(--border);

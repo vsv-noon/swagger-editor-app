@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { Link } from '@/i18n/navigation';
 
+import AuthComponent from './AuthComponent';
 import styles from './Header.module.scss';
 
 export type HeaderProps = {
@@ -15,10 +16,10 @@ const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
   const pathname = usePathname();
   const isAbout = pathname.includes('/about');
   const isHistory = pathname.includes('/history');
-  if (!user) {
-    return (
-      <header className={styles.header}>
-        <nav className={styles.headerNav}>
+  return (
+    <header className={styles.header}>
+      <nav className={styles.headerNav}>
+        <div className={styles.navLeft}>
           {isAbout ? (
             <Link className={styles.link} href="/">
               Home
@@ -28,46 +29,26 @@ const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
               About
             </Link>
           )}
-        </nav>
-        <div className={styles.headerButtons}>
-          <button className={`${styles.signInButton} ${styles.button}`}>
-            Sign In
-          </button>
-          <button className={`${styles.signUpButton} ${styles.button}`}>
-            Sign Up
-          </button>
         </div>
-      </header>
-    );
-  }
-  return (
-    <header className={styles.header}>
-      <nav className={styles.headerNav}>
-        {isAbout ? (
-          <Link className={styles.link} href="/">
-            Home
-          </Link>
-        ) : (
-          <Link className={styles.link} href="/about">
-            About
-          </Link>
-        )}
-
-        {isHistory ? (
-          <Link className={styles.link} href="/">
-            Home
-          </Link>
-        ) : (
-          <Link className={styles.link} href="/history">
-            History
-          </Link>
-        )}
+        <div className={styles.navRight}>
+          {user === null ? (
+            <></>
+          ) : (
+            <>
+              {isHistory ? (
+                <Link className={styles.link} href="/">
+                  Home
+                </Link>
+              ) : (
+                <Link className={styles.link} href="/history">
+                  History
+                </Link>
+              )}
+            </>
+          )}
+          <AuthComponent user={user}></AuthComponent>
+        </div>
       </nav>
-      <div className={styles.headerButtons}>
-        <button className={`${styles.signOutButton} ${styles.button}`}>
-          Sign Out
-        </button>
-      </div>
     </header>
   );
 };
