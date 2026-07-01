@@ -14,6 +14,10 @@ export default function Viewer() {
   const [params, setParams] = useState<Record<string, string>>({});
   const [headers, setHeaders] = useState<Record<string, string>>({});
   const [body, setBody] = useState('');
+
+  const [file, setFile] = useState<File | null>(null);
+  const contentType = selected?.requestBody?.contentType;
+  const isBinary = contentType === 'application/octet-stream';
   const [response, setResponse] = useState<{
     status: number;
     headers: Record<string, string>;
@@ -69,14 +73,21 @@ export default function Viewer() {
     if (search.toString()) {
       url += '?' + search.toString();
     }
+    const isBinary =
+      selected.requestBody?.contentType === 'application/octet-stream';
+
     const res = await fetch(url, {
       method: selected.method.toUpperCase(),
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
-      body:
-        selected.requestBody && selected.method !== 'get' ? body : undefined,
+      headers: isBinary
+        ? {
+            'Content-Type': 'application/octet-stream',
+            ...headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+      body: isBinary ? file : selected.requestBody ? body : undefined,
     });
     const text = await res.text();
 
@@ -85,7 +96,7 @@ export default function Viewer() {
     try {
       parsed = JSON.parse(text);
     } catch {
-      // если ответ не JSON, оставляем строку
+      console.debug('Response is not JSON');
     }
 
     setResponse({
@@ -94,6 +105,7 @@ export default function Viewer() {
       body: parsed,
     });
   }
+
   return (
     <div style={{ display: 'flex', gap: 40 }}>
       <div>
@@ -174,14 +186,23 @@ export default function Viewer() {
                 />
               </div>
             ))}
-            {selected.requestBody && (
-              <textarea
-                rows={15}
-                cols={60}
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-              />
-            )}
+            {selected.requestBody &&
+              (isBinary ? (
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0] ?? null;
+                    setFile(f);
+                  }}
+                />
+              ) : (
+                <textarea
+                  rows={15}
+                  cols={60}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                />
+              ))}
             <h4>Responses</h4>
             {response && (
               <>
