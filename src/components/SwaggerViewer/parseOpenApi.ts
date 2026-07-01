@@ -2,12 +2,14 @@ import type {
   Endpoint,
   EndpointParam,
   HttpMethod,
+  JsonValue,
+  OpenApiSchema,
   ParamLocation,
   RequestBody,
   ResponseInfo,
 } from './types';
 
-function isObject(v: unknown): v is Record<string, unknown> {
+export function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null;
 }
 
@@ -48,6 +50,10 @@ export function parseOpenApi(raw: unknown): Endpoint[] {
   const paths = raw.paths;
   if (!isObject(paths)) return [];
 
+  const components = isObject(raw.components) ? raw.components : undefined;
+
+  const schemas = isObject(components?.schemas) ? components.schemas : {};
+
   const result: Endpoint[] = [];
 
   for (const path of Object.keys(paths)) {
@@ -64,10 +70,10 @@ export function parseOpenApi(raw: unknown): Endpoint[] {
       if (!isObject(operation)) continue;
 
       const paramsRaw = operation.parameters;
-      const request = parseRequestBody(operation.requestBody);
+      const request = parseRequestBody(operation.requestBody, schemas);
 
       const params: EndpointParam[] = [];
-      const responses = parseResponses(operation.responses);
+      const responses = parseResponses(operation.responses, schemas);
       if (Array.isArray(paramsRaw)) {
         for (const p of paramsRaw) {
           const parsed = parseParam(p);
@@ -87,7 +93,10 @@ export function parseOpenApi(raw: unknown): Endpoint[] {
 
   return result;
 }
-function parseRequestBody(body: unknown): RequestBody | undefined {
+function parseRequestBody(
+  body: unknown,
+  schemas: Record<string, unknown>
+): RequestBody | undefined {
   if (!isObject(body)) return undefined;
 
   const content = body.content;
@@ -103,15 +112,19 @@ function parseRequestBody(body: unknown): RequestBody | undefined {
   const mediaType = content[contentType];
 
   if (!isObject(mediaType)) return undefined;
+  const schema = resolveSchema(mediaType.schema, schemas);
 
   return {
     contentType,
-    schema: mediaType.schema,
-    example: mediaType.example,
+    schema,
+    example: generateExample(schema),
   };
 }
 
-function parseResponses(raw: unknown): ResponseInfo[] {
+function parseResponses(
+  raw: unknown,
+  schemas: Record<string, unknown>
+): ResponseInfo[] {
   if (!isObject(raw)) return [];
 
   const result: ResponseInfo[] = [];
@@ -127,8 +140,8 @@ function parseResponses(raw: unknown): ResponseInfo[] {
         : '';
 
     let contentType: string | undefined;
-    let schema: unknown;
-    let example: unknown;
+    let schema: OpenApiSchema | undefined;
+    let example: JsonValue | undefined;
 
     const content = responseRaw.content;
 
@@ -142,8 +155,8 @@ function parseResponses(raw: unknown): ResponseInfo[] {
         const media = content[firstType];
 
         if (isObject(media)) {
-          schema = media.schema;
-          example = media.example;
+          schema = resolveSchema(media.schema, schemas);
+          example = generateExample(schema);
         }
       }
     }
@@ -161,4 +174,118 @@ function parseResponses(raw: unknown): ResponseInfo[] {
 }
 function isResponseObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null;
+}
+function resolveSchema(
+  schema: unknown,
+  schemas: Record<string, unknown>
+): OpenApiSchema | undefined {
+  if (!isObject(schema)) {
+    return undefined;
+  }
+
+  if (typeof schema.$ref === 'string') {
+    const name = schema.$ref.split('/').pop();
+
+    if (!name) {
+      return undefined;
+    }
+
+    return resolveSchema(schemas[name], schemas);
+  }
+
+  const result: OpenApiSchema = {};
+
+  if (typeof schema.type === 'string') {
+    result.type = schema.type;
+  }
+
+  if (typeof schema.format === 'string') {
+    result.format = schema.format;
+  }
+
+  if (typeof schema.description === 'string') {
+    result.description = schema.description;
+  }
+
+  if ('example' in schema) {
+    const example = schema.example;
+
+    if (
+      typeof example === 'string' ||
+      typeof example === 'number' ||
+      typeof example === 'boolean' ||
+      example === null ||
+      Array.isArray(example) ||
+      isObject(example)
+    ) {
+      result.example = example as JsonValue;
+    }
+  }
+
+  if (Array.isArray(schema.enum)) {
+    result.enum = schema.enum as JsonValue[];
+  }
+
+  if (isObject(schema.properties)) {
+    result.properties = {};
+
+    for (const key of Object.keys(schema.properties)) {
+      const property = resolveSchema(schema.properties[key], schemas);
+
+      if (property) {
+        result.properties[key] = property;
+      }
+    }
+  }
+
+  if (schema.items !== undefined) {
+    const items = resolveSchema(schema.items, schemas);
+
+    if (items) {
+      result.items = items;
+    }
+  }
+
+  return result;
+}
+function generateExample(schema?: OpenApiSchema): JsonValue {
+  if (!schema) return null;
+
+  if (schema.example !== undefined) {
+    return schema.example;
+  }
+
+  if (schema.enum?.length) {
+    return schema.enum[0];
+  }
+
+  switch (schema.type) {
+    case 'string':
+      return 'string';
+
+    case 'integer':
+    case 'number':
+      return 0;
+
+    case 'boolean':
+      return true;
+
+    case 'array':
+      return [generateExample(schema.items) ?? 'string'];
+
+    case 'object': {
+      const obj: Record<string, JsonValue> = {};
+
+      const props = schema.properties ?? {};
+
+      for (const key of Object.keys(props)) {
+        obj[key] = generateExample(props[key]) ?? null;
+      }
+
+      return obj;
+    }
+
+    default:
+      return null;
+  }
 }

@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 
 import { loadMockSchema } from './mockSchema';
+import { SchemaField } from './SchemaField';
+import SchemaViewer from './SchemaViewer';
 
 import type { Endpoint } from './types';
 
@@ -65,11 +67,12 @@ export default function Viewer() {
                   <b>Content type:</b> {selected.requestBody.contentType}
                 </div>
 
-                <h5>Schema</h5>
-
-                <pre>
-                  {JSON.stringify(selected.requestBody.schema, null, 2)}
-                </pre>
+                {selected.requestBody?.schema && (
+                  <>
+                    <h5>Schema</h5>
+                    <SchemaViewer schema={selected.requestBody.schema} />
+                  </>
+                )}
 
                 <h5>Example</h5>
 
@@ -98,7 +101,7 @@ export default function Viewer() {
                 {response.schema !== undefined && (
                   <>
                     <div>Schema</div>
-                    <pre>{JSON.stringify(response.schema, null, 2)}</pre>
+                    <SchemaViewer schema={response.schema} />
                   </>
                 )}
 

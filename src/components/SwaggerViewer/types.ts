@@ -1,7 +1,7 @@
 export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
 
 export type ParamLocation = 'path' | 'query' | 'header' | 'cookie';
-type JsonValue =
+export type JsonValue =
   | string
   | number
   | boolean
@@ -14,18 +14,31 @@ export interface EndpointParam {
   in: ParamLocation;
   required: boolean;
 }
+export interface OpenApiSchema {
+  type?: string;
+  format?: string;
+  example?: JsonValue;
+  description?: string;
+  enum?: JsonValue[];
+
+  properties?: Record<string, OpenApiSchema>;
+
+  items?: OpenApiSchema;
+
+  $ref?: string;
+}
 export interface RequestBody {
   contentType: string;
-  schema?: unknown;
-  example?: unknown;
+  schema?: OpenApiSchema;
+  example?: JsonValue;
 }
 
 export interface ResponseInfo {
   statusCode: string;
   description: string;
   contentType?: string;
-  schema?: unknown;
-  example?: unknown;
+  schema?: OpenApiSchema;
+  example?: JsonValue;
 }
 
 export interface Endpoint {
