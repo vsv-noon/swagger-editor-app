@@ -1,6 +1,6 @@
 import { isObject } from './parseOpenApi';
 import SchemaViewer from './SchemaViewer';
-import { JsonValue, OpenApiSchema } from './types';
+import { OpenApiSchema } from './types';
 
 interface FieldProps {
   name: string;

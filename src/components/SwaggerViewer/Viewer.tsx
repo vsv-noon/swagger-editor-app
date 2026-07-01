@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import { loadMockSchema } from './mockSchema';
-import { SchemaField } from './SchemaField';
 import SchemaViewer from './SchemaViewer';
 
 import type { Endpoint } from './types';
@@ -12,14 +11,89 @@ export default function Viewer() {
   const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
   const [selected, setSelected] = useState<Endpoint | null>(null);
 
+  const [params, setParams] = useState<Record<string, string>>({});
+  const [headers, setHeaders] = useState<Record<string, string>>({});
+  const [body, setBody] = useState('');
+  const [response, setResponse] = useState<{
+    status: number;
+    headers: Record<string, string>;
+    body: unknown;
+  } | null>(null);
+
   useEffect(() => {
     loadMockSchema().then(setEndpoints);
   }, []);
+
+  function resetForSelected(endpoint: Endpoint) {
+    setParams({});
+    setHeaders({});
+    setBody(
+      endpoint.requestBody?.example
+        ? JSON.stringify(endpoint.requestBody.example, null, 2)
+        : ''
+    );
+    setResponse(null);
+  }
+
+  useEffect(() => {
+    if (!selected) return;
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    resetForSelected(selected);
+  }, [selected]);
 
   if (!endpoints.length) {
     return <div>Loading...</div>;
   }
 
+  async function execute() {
+    if (!selected) return;
+
+    let url = 'http://localhost:8080/api/v3' + selected.path;
+    for (const p of selected.parameters.filter((p) => p.in === 'path')) {
+      url = url.replace(
+        `{${p.name}}`,
+        encodeURIComponent(params[p.name] ?? '')
+      );
+    }
+    const search = new URLSearchParams();
+
+    for (const p of selected.parameters.filter((p) => p.in === 'query')) {
+      const value = params[p.name];
+
+      if (value) {
+        search.append(p.name, value);
+      }
+    }
+
+    if (search.toString()) {
+      url += '?' + search.toString();
+    }
+    const res = await fetch(url, {
+      method: selected.method.toUpperCase(),
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body:
+        selected.requestBody && selected.method !== 'get' ? body : undefined,
+    });
+    const text = await res.text();
+
+    let parsed: unknown = text;
+
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      // если ответ не JSON, оставляем строку
+    }
+
+    setResponse({
+      status: res.status,
+      headers: Object.fromEntries(res.headers.entries()),
+      body: parsed,
+    });
+  }
   return (
     <div style={{ display: 'flex', gap: 40 }}>
       <div>
@@ -84,7 +158,48 @@ export default function Viewer() {
               <div>No request body</div>
             )}
 
+            <button onClick={execute}>Execute</button>
+            {selected.parameters.map((p) => (
+              <div key={p.name}>
+                <label>{p.name}</label>
+
+                <input
+                  value={params[p.name] ?? ''}
+                  onChange={(e) =>
+                    setParams({
+                      ...params,
+                      [p.name]: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            ))}
+            {selected.requestBody && (
+              <textarea
+                rows={15}
+                cols={60}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              />
+            )}
             <h4>Responses</h4>
+            {response && (
+              <>
+                <h4>Result</h4>
+
+                <div>
+                  <b>Status:</b> {response.status}
+                </div>
+
+                <h5>Headers</h5>
+
+                <pre>{JSON.stringify(response.headers, null, 2)}</pre>
+
+                <h5>Body</h5>
+
+                <pre>{JSON.stringify(response.body, null, 2)}</pre>
+              </>
+            )}
 
             {selected.responses.map((response) => (
               <div key={response.statusCode}>

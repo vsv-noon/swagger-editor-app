@@ -1,5 +1,5 @@
 import { SchemaField } from './SchemaField';
-import { JsonValue, OpenApiSchema } from './types';
+import { OpenApiSchema } from './types';
 
 interface Props {
   schema: OpenApiSchema;
