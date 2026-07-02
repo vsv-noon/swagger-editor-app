@@ -2,12 +2,13 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { Diagnostic } from '@codemirror/lint';
 import { EditorView } from '@codemirror/view';
 
-import { parseCode } from './parse';
+import { parseCode } from '@/lib/parse';
 
 export const openApiLinterSource = async (
   view: EditorView
 ): Promise<Diagnostic[]> => {
   const code = view.state.doc.toString();
+
   if (!code.trim()) return [];
 
   const diagnostics: Diagnostic[] = [];
@@ -18,7 +19,7 @@ export const openApiLinterSource = async (
     return [
       {
         from: 0,
-        to: Math.min(10, code.length),
+        to: code.length,
         severity: 'error',
         message: 'Invalid JSON/YAML',
       },
@@ -32,7 +33,7 @@ export const openApiLinterSource = async (
 
     diagnostics.push({
       from: 0,
-      to: 1,
+      to: code.length,
       severity: 'error',
       message,
     });

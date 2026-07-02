@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { json } from '@codemirror/lang-json';
@@ -12,8 +12,11 @@ import {
   lineNumbers,
 } from '@codemirror/view';
 
+import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/constants';
+import { convertFormat } from '@/lib/convert';
+import { detectFormat, parseCode } from '@/lib/parse';
+
 import { openApiLinterSource } from './openApiLinterSource';
-import { parseCode } from './parse';
 import styles from './SwaggerEditor.module.scss';
 
 interface SwaggerEditorProps {
@@ -32,8 +35,13 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewRef = useRef<EditorView | null>(null);
 
+  const [liveFormat, setLiveFormat] = useState<'yaml' | 'json'>('yaml');
+
   useEffect(() => {
     if (!containerRef.current) return;
+
+    const startFormat = detectFormat(OPEN_API_EDITOR_INITIAL_VALUE);
+    setLiveFormat(startFormat);
 
     const startState = EditorState.create({
       doc: value,
@@ -50,6 +58,8 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
             const newValue = update.state.doc.toString();
+            const format = detectFormat(newValue);
+            setLiveFormat(format);
             onChange(newValue);
 
             viewRef.current?.dispatch({
@@ -70,11 +80,58 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
     return () => view.destroy();
   }, []);
 
+  const setLanguage = (format: 'json' | 'yaml') => {
+    const view = viewRef.current;
+    if (!view) return;
+
+    view.dispatch({
+      effects: languageCompartment.reconfigure(
+        format === 'json' ? json() : yaml()
+      ),
+    });
+  };
+
+  const handleConvert = () => {
+    const view = viewRef.current;
+    if (!view) return;
+    const code = view.state.doc.toString();
+
+    const nextFormat = liveFormat === 'yaml' ? 'json' : 'yaml';
+
+    const converted = convertFormat(code, nextFormat);
+
+    if (!converted) return;
+
+    const { from } = view.state.selection.main;
+
+    view.dispatch({
+      changes: {
+        from: 0,
+        to: view.state.doc.length,
+        insert: converted,
+      },
+      selection: {
+        anchor: Math.min(from, converted.length),
+      },
+    });
+
+    setLanguage(nextFormat);
+    setLiveFormat(nextFormat);
+  };
+
   return (
-    <div
-      className={styles.swaggerEditor}
-      style={{ height: '100%' }}
-      ref={containerRef}
-    />
+    <div className={styles.swaggerEditorContainer}>
+      <div className={styles.buttonsBlock}>
+        <button className={styles.button} onClick={handleConvert}>
+          Convert to {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
+        </button>
+        <button className={styles.button}>Save</button>
+      </div>
+      <div
+        className={styles.swaggerEditor}
+        style={{ height: '100%' }}
+        ref={containerRef}
+      />
+    </div>
   );
 }

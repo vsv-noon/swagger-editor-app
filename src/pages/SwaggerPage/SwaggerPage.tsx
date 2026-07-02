@@ -5,7 +5,8 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import Loader from '@/components/Loader';
-import { parseCode } from '@/components/SwaggerEditor/parse';
+import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/constants';
+import { parseCode } from '@/lib/parse';
 
 const SwaggerEditor = dynamic(() => import('@/components/SwaggerEditor'), {
   ssr: false,
@@ -13,36 +14,9 @@ const SwaggerEditor = dynamic(() => import('@/components/SwaggerEditor'), {
 });
 
 export default function SwaggerPage() {
-  const [code, setCode] = useState(
-    `openapi: 3.0.0
-info:
-  title: My API
-  version: 1.0.0
-paths:
-  /paths:
-    post:
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: ""
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: ""
-components:
-  schemas:
-    User:
-      "type": "object"`
-  );
+  const [code, setCode] = useState(OPEN_API_EDITOR_INITIAL_VALUE);
 
   const parsed = parseCode(code);
-
-  console.log(parsed);
 
   return (
     <div>
