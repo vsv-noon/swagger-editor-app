@@ -140,10 +140,6 @@ export default function Details({ selected }: Props) {
         <div>Select endpoint</div>
       ) : (
         <>
-          <div>
-            <b>{selected.method.toUpperCase()}</b> {selected.path}
-          </div>
-
           <h4>Parameters</h4>
 
           {selected.parameters.length === 0 ? (
