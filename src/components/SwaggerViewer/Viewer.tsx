@@ -9,8 +9,7 @@ import type { Endpoint } from './types';
 
 export default function Viewer() {
   const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
-  const [selected, setSelected] = useState<Endpoint | null>(null);
-
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   useEffect(() => {
     loadMockSchema().then(setEndpoints);
   }, []);
@@ -25,18 +24,16 @@ export default function Viewer() {
         <h3>Endpoints</h3>
 
         {endpoints.map((e, i) => (
-          <div
-            key={i}
-            onClick={() => setSelected(e)}
-            style={{ cursor: 'pointer', marginBottom: 8 }}
-          >
-            <b>{e.method.toUpperCase()}</b> {e.path}
+          <div key={i}>
+            <div
+              onClick={() => setSelectedIndex(selectedIndex === i ? null : i)}
+              style={{ cursor: 'pointer', marginBottom: 8 }}
+            >
+              <b>{e.method.toUpperCase()}</b> {e.path}
+            </div>
+            {selectedIndex === i && <Details selected={e} />}
           </div>
         ))}
-      </div>
-
-      <div>
-        <Details selected={selected} />
       </div>
     </div>
   );
