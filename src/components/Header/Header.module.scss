@@ -8,6 +8,9 @@ $sign-out-btn-color: #46334f;
   justify-content: space-between;
   padding: 1rem;
   gap: 1.55rem;
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .headerNav {
