@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { executeRequest } from '@/lib/executeRequest';
+
 import SchemaViewer from './SchemaViewer';
 import { Endpoint } from './types';
 
@@ -39,60 +41,54 @@ export default function Details({ selected }: Props) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     resetForSelected(selected);
   }, [selected]);
-
   async function execute() {
     if (!selected) return;
 
-    let url = 'http://localhost:8080/api/v3' + selected.path;
-    for (const p of selected.parameters.filter((p) => p.in === 'path')) {
-      url = url.replace(
-        `{${p.name}}`,
-        encodeURIComponent(params[p.name] ?? '')
-      );
-    }
-    const search = new URLSearchParams();
+    const pathParams: Record<string, string> = {};
+    const queryParams: Record<string, string> = {};
 
-    for (const p of selected.parameters.filter((p) => p.in === 'query')) {
+    for (const p of selected.parameters ?? []) {
       const value = params[p.name];
 
-      if (value) {
-        search.append(p.name, value);
+      if (value === undefined || value === null) continue;
+
+      if (p.in === 'path') {
+        pathParams[p.name] = String(value);
+      }
+      if (p.in === 'query') {
+        queryParams[p.name] = String(value);
       }
     }
 
-    if (search.toString()) {
-      url += '?' + search.toString();
-    }
     const isBinary =
       selected.requestBody?.contentType === 'application/octet-stream';
 
-    const res = await fetch(url, {
-      method: selected.method.toUpperCase(),
-      headers: isBinary
-        ? {
-            'Content-Type': 'application/octet-stream',
-            ...headers,
-          }
-        : {
-            'Content-Type': 'application/json',
-            ...headers,
-          },
-      body: isBinary ? file : selected.requestBody ? body : undefined,
-    });
-    const text = await res.text();
+    const reqHeaders: Record<string, string> = { ...headers };
 
-    let parsed: unknown = text;
-
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      console.debug('Response is not JSON');
+    if (isBinary) {
+      reqHeaders['Content-Type'] = 'application/octet-stream';
+    } else {
+      reqHeaders['Content-Type'] = 'application/json';
     }
 
+    const cleanedBody = body ?? undefined;
+
+    const res = await executeRequest({
+      path: selected.path,
+      method: selected.method,
+      pathParams,
+      queryParams,
+      headers: reqHeaders,
+      isBinary,
+      body: selected.requestBody ? cleanedBody : undefined,
+    });
+
+    const data = await res.json();
+
     setResponse({
-      status: res.status,
-      headers: Object.fromEntries(res.headers.entries()),
-      body: parsed,
+      status: data.status,
+      headers: data.headers,
+      body: data.body,
     });
   }
   function generateCurl() {
@@ -175,7 +171,7 @@ export default function Details({ selected }: Props) {
             <div>No request body</div>
           )}
 
-          <button onClick={execute}>Execute</button>
+          <button onClick={execute}>Try it Out</button>
           {selected.parameters.map((p) => (
             <div key={p.name}>
               <label>{p.name}</label>
