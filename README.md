@@ -1,3 +1,7 @@
+[![swagger-editor-app CI (Run Unit Tests)](https://github.com/vsv-noon/swagger-editor-app/actions/workflows/node.js.yml/badge.svg)](https://github.com/vsv-noon/swagger-editor-app//actions/workflows/node.js.yml)
+
+Deployment: [swagger-editor-app-wine.vercel.app](https://swagger-editor-app-wine.vercel.app)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
