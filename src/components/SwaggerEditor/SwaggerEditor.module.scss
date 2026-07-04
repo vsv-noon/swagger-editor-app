@@ -1,0 +1,28 @@
+.swaggerEditorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+}
+.swaggerEditor {
+  height: 100%;
+  border: rem(1px) solid #ddd;
+  overflow: auto;
+}
+
+.buttonsBlock {
+  display: flex;
+  gap: rem(20px);
+  padding: rem(20px) 0;
+}
+
+.button {
+  align-self: flex-start;
+  background-color: #fff;
+  padding: rem(5px) rem(10px);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--button-secondary-hover);
+}
