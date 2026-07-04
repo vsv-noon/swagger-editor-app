@@ -26,6 +26,7 @@ const SignInForm = () => {
   const onSubmit = async (data: SignInInput) => {
     supabase.auth.signInWithPassword(data).then(() => {
       router.push('/');
+      router.refresh();
     });
   };
 

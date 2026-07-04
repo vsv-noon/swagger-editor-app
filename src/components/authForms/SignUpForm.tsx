@@ -30,6 +30,7 @@ const SignUpForm = () => {
       password: data.password,
     });
     router.push('/');
+    router.refresh();
   };
 
   return (
