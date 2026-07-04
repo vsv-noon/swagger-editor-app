@@ -2,12 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useRouter } from '@/i18n/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 import styles from './AuthForms.module.scss';
 import { signInSchema, SignInInput } from './utils/validation';
 
 const SignInForm = () => {
   const router = useRouter();
+  const supabase = createClient();
 
   const {
     control,
@@ -22,7 +24,9 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (data: SignInInput) => {
-    router.push('/');
+    supabase.auth.signInWithPassword(data).then(() => {
+      router.push('/');
+    });
   };
 
   return (

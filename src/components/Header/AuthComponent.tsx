@@ -3,6 +3,7 @@
 import { User } from '@supabase/supabase-js';
 
 import { Link } from '@/i18n/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 import styles from './Header.module.scss';
 
@@ -11,6 +12,12 @@ export type AuthProps = {
 };
 
 const AuthComponent: React.FC<AuthProps> = ({ user }) => {
+  const supabase = createClient();
+
+  const onSignOut = async () => {
+    supabase.auth.signOut();
+  };
+
   return (
     <div className={styles.headerButtons}>
       {user === null ? (
@@ -30,7 +37,10 @@ const AuthComponent: React.FC<AuthProps> = ({ user }) => {
         </>
       ) : (
         <>
-          <button className={`${styles.signOutButton} ${styles.button}`}>
+          <button
+            className={`${styles.signOutButton} ${styles.button}`}
+            onClick={onSignOut}
+          >
             Sign Out
           </button>
         </>
