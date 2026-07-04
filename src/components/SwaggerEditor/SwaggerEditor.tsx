@@ -15,6 +15,8 @@ import {
 import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/constants';
 import { convertFormat } from '@/lib/convert';
 import { detectFormat, parseCode } from '@/lib/parse';
+import { saveSchema } from '@/lib/saveSchema';
+import { useUser } from '@/lib/supabase/useUser';
 
 import { openApiLinterSource } from './openApiLinterSource';
 import styles from './SwaggerEditor.module.scss';
@@ -36,6 +38,11 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
   const viewRef = useRef<EditorView | null>(null);
 
   const [liveFormat, setLiveFormat] = useState<'yaml' | 'json'>('yaml');
+  const [isValidSchema, setIsValidSchema] = useState(true);
+
+  const user = useUser();
+
+  const canSave = isValidSchema && !!user;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -55,12 +62,15 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
         keymap.of([...defaultKeymap, ...historyKeymap]),
         yaml(),
 
-        EditorView.updateListener.of((update) => {
+        EditorView.updateListener.of(async (update) => {
           if (update.docChanged) {
             const newValue = update.state.doc.toString();
             const format = detectFormat(newValue);
             setLiveFormat(format);
             onChange(newValue);
+
+            const diagnostics = await openApiLinterSource(update.view);
+            setIsValidSchema(diagnostics.length === 0);
 
             viewRef.current?.dispatch({
               effects: languageCompartment.reconfigure(getLanguage(newValue)),
@@ -119,13 +129,34 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
     setLiveFormat(nextFormat);
   };
 
+  const handleSave = async () => {
+    const view = viewRef.current;
+    if (!view) return;
+
+    const code = view.state.doc.toString();
+
+    try {
+      await saveSchema(code);
+      alert('Saved successfully ✅');
+    } catch (error) {
+      const typedError = error as Error;
+      alert(typedError.message);
+    }
+  };
+
   return (
     <div className={styles.swaggerEditorContainer}>
       <div className={styles.buttonsBlock}>
         <button className={styles.button} onClick={handleConvert}>
           Convert to {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
         </button>
-        <button className={styles.button}>Save</button>
+        <button
+          className={styles.button}
+          onClick={handleSave}
+          disabled={!canSave}
+        >
+          Save
+        </button>
       </div>
       <div
         className={styles.swaggerEditor}
