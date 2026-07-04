@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 
 import { routing } from './i18n/routing';
-import { updateSession } from './utils/supabase/proxy';
+import { updateSession } from './lib/supabase/proxy';
 
 const handleI18nRouting = createMiddleware(routing);
 

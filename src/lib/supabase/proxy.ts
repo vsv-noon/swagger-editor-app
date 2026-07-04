@@ -45,8 +45,8 @@ export async function updateSession(request: NextRequest) {
   if (
     request.nextUrl.pathname !== '/' &&
     !user &&
-    !request.nextUrl.pathname.includes('/signIn') &&
-    !request.nextUrl.pathname.includes('/signUp') &&
+    !request.nextUrl.pathname.includes('/signin') &&
+    !request.nextUrl.pathname.includes('/signup') &&
     !request.nextUrl.pathname.includes('/about')
   ) {
     // no user, potentially respond by redirecting the user to the login page
@@ -57,8 +57,8 @@ export async function updateSession(request: NextRequest) {
 
   if (
     user &&
-    (request.nextUrl.pathname.includes('/signIn') ||
-      request.nextUrl.pathname.includes('/signUp'))
+    (request.nextUrl.pathname.includes('/signin') ||
+      request.nextUrl.pathname.includes('/signup'))
   ) {
     const url = request.nextUrl.clone();
     url.pathname = '/';
