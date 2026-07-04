@@ -28,6 +28,11 @@ const SignUpForm = () => {
     await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+      options: {
+        data: {
+          name: data.name,
+        },
+      },
     });
     router.push('/');
     router.refresh();
