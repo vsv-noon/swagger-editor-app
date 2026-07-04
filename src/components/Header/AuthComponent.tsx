@@ -16,8 +16,9 @@ const AuthComponent: React.FC<AuthProps> = ({ user }) => {
   const router = useRouter();
 
   const onSignOut = async () => {
-    supabase.auth.signOut();
-    router.refresh();
+    supabase.auth.signOut().then(() => {
+      router.refresh();
+    });
   };
 
   return (
