@@ -8,14 +8,18 @@ import styles from './viewer.module.scss';
 
 import type { Endpoint } from './types';
 
-export default function Viewer() {
+type ViewerProps = {
+  parsed: unknown;
+};
+
+export default function Viewer({ parsed }: ViewerProps) {
   const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [selected, setSelected] = useState<Endpoint | null>(null);
   useEffect(() => {
-    loadMockSchema().then(setEndpoints);
-  }, []);
+    loadMockSchema(parsed).then(setEndpoints);
+  }, [parsed]);
 
   if (!endpoints.length) {
     return <div>Loading...</div>;
