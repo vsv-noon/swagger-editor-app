@@ -14,8 +14,8 @@ export type HeaderProps = {
 
 const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
   const pathname = usePathname();
-  const isAbout = pathname.includes('/about');
-  const isHistory = pathname.includes('/history');
+  const isAbout = pathname?.includes('/about');
+  const isHistory = pathname?.includes('/history');
   return (
     <header className={styles.header}>
       <nav className={styles.headerNav}>
