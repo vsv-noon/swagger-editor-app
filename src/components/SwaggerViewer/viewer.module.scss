@@ -38,7 +38,6 @@
           height: 62px;
           padding: 14px;
           border-radius: 10px;
-          border: 2px solid;
           .methodPath {
             display: flex;
             align-items: center;
@@ -69,11 +68,13 @@
               background: var(--get-primary);
             }
           }
-
-          &[data-method='post'] {
+        }
+        /*   &[data-method='post'] {
             background: var(--post-secondary);
             border-color: var(--post-primary);
-
+            .endpoint{
+              border-color: var(--post-primary);
+            }
             .icon {
               color: var(--post-primary);
             }
@@ -104,8 +105,43 @@
               background: var(--delete-primary);
             }
           }
-        }
+*/
       }
+    }
+  }
+}
+.endpointWapper {
+  &[data-method='get'] {
+    --accent-color: var(--get-primary);
+    --background-color: var(--get-secondary);
+  }
+
+  &[data-method='post'] {
+    --accent-color: var(--post-primary);
+    --background-color: var(--post-secondary);
+  }
+
+  &[data-method='put'] {
+    --accent-color: var(--put-primary);
+    --background-color: var(--put-secondary);
+  }
+
+  &[data-method='delete'] {
+    --accent-color: var(--delete-primary);
+    --background-color: var(--delete-secondary);
+  }
+  background: var(--background-color);
+
+  .endpoint {
+    border: 2px solid;
+    border-color: var(--accent-color);
+
+    background: var(--background-color);
+    .icon {
+      color: var(--accent-color);
+    }
+    .method {
+      background: var(--accent-color);
     }
   }
 }

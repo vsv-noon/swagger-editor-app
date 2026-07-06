@@ -61,6 +61,7 @@ export default function Viewer({ parsed }: ViewerProps) {
                 <div
                   key={`${e.method}-${e.path}`}
                   className={styles.endpointWapper}
+                  data-method={e.method.toLowerCase()}
                 >
                   <div
                     onClick={() => {
@@ -68,7 +69,6 @@ export default function Viewer({ parsed }: ViewerProps) {
                       setSelectedIndex(selectedIndex === i ? null : i);
                     }}
                     className={styles.endpoint}
-                    data-method={e.method.toLowerCase()}
                     data-selected={selectedIndex === i}
                   >
                     <div className={styles.methodPath}>

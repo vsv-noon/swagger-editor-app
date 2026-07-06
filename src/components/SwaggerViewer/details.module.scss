@@ -1,0 +1,5 @@
+@use './viewer.module.scss';
+.details {
+  border-top: 2px solid var(--accent-color);
+  background-color: color-mix(in srgb, var(--accent-color) 10%, white);
+}
