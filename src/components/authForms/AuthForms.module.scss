@@ -5,7 +5,7 @@ $background: #d9ebf4;
   background-color: white;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   padding: rem(40px);
   border-radius: 1.25rem;
   color: $border;
@@ -33,7 +33,7 @@ $background: #d9ebf4;
   border-radius: 0.625rem;
   border: $border solid 2px;
   color: $border;
-  align-self: center;
+  align-self: flex-end;
 }
 
 .authInputContainer {
@@ -45,7 +45,7 @@ $background: #d9ebf4;
 .formItem {
   display: flex;
   flex-direction: column;
-  align-self: center;
+  align-self: flex-end;
 }
 
 .authErrorMsg {
@@ -56,4 +56,8 @@ $background: #d9ebf4;
 }
 
 .authPasswordChecker {
+}
+
+.authHeader {
+  margin-bottom: 1rem;
 }

@@ -26,13 +26,13 @@ const AuthComponent: React.FC<AuthProps> = ({ user }) => {
       {user === null ? (
         <>
           <Link
-            href="/signin"
+            href="/auth/signin"
             className={`${styles.signInButton} ${styles.button}`}
           >
             Sign In
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className={`${styles.signUpButton} ${styles.button}`}
           >
             Sign Up

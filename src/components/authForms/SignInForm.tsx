@@ -36,7 +36,7 @@ const SignInForm = () => {
       className={styles.authForm}
       noValidate
     >
-      <h1>Sign In: </h1>
+      <h1 className={styles.authHeader}>Sign In: </h1>
       <div className={styles.authInputsGroup}>
         <Controller
           name="email"
