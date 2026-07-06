@@ -19,6 +19,8 @@ export default function Details({ selected, server }: Props) {
 
   const contentType = selected?.requestBody?.contentType;
   const isBinary = contentType === 'application/octet-stream';
+  const showJsonEditor =
+    contentType === 'application/json' || contentType === 'application/*+json';
   const [response, setResponse] = useState<{
     status: number;
     headers: Record<string, string>;
@@ -69,7 +71,8 @@ export default function Details({ selected, server }: Props) {
     if (isBinary) {
       reqHeaders['Content-Type'] = 'application/octet-stream';
     } else {
-      reqHeaders['Content-Type'] = 'application/json';
+      reqHeaders['Content-Type'] =
+        selected.requestBody?.contentType ?? 'application/json';
     }
 
     const cleanedBody = body ?? undefined;
@@ -199,12 +202,14 @@ export default function Details({ selected, server }: Props) {
                 }}
               />
             ) : (
-              <textarea
-                rows={15}
-                cols={60}
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-              />
+              showJsonEditor && (
+                <textarea
+                  rows={15}
+                  cols={60}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                />
+              )
             ))}
           <h4>Responses</h4>
           <button onClick={() => setCurl(generateCurl())}>Generate cURL</button>
