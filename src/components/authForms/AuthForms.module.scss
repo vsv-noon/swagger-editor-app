@@ -25,6 +25,14 @@ $background: #d9ebf4;
   width: rem(315px);
   height: rem(35px);
   padding: 5px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #e1f1f5;
+  }
+  &:focus {
+    outline: none;
+    border: $border solid 2px;
+  }
 }
 
 .authSubmitBtn {
@@ -34,6 +42,10 @@ $background: #d9ebf4;
   border: $border solid 2px;
   color: $border;
   align-self: flex-end;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #d5effc;
+  }
 }
 
 .authInputContainer {
