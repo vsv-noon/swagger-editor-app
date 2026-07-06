@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE = 'http://localhost:8080/api/v3';
-
 export async function POST(request: NextRequest) {
-  const { path, method, pathParams, queryParams, headers, body, isBinary } =
-    await request.json();
+  const {
+    server,
+    path,
+    method,
+    pathParams,
+    queryParams,
+    headers,
+    body,
+    isBinary,
+  } = await request.json();
 
-  let url = API_BASE + path;
+  let url = server + path;
 
   if (pathParams) {
     for (const [key, value] of Object.entries(pathParams)) {

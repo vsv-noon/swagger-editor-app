@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { executeRequest } from '@/lib/executeRequest';
 
@@ -7,8 +7,9 @@ import { Endpoint } from './types';
 
 interface Props {
   selected: Endpoint | null;
+  server: string;
 }
-export default function Details({ selected }: Props) {
+export default function Details({ selected, server }: Props) {
   const [params, setParams] = useState<Record<string, string>>({});
   const [headers, setHeaders] = useState<Record<string, string>>({});
   const [body, setBody] = useState('');
@@ -74,6 +75,7 @@ export default function Details({ selected }: Props) {
     const cleanedBody = body ?? undefined;
 
     const res = await executeRequest({
+      server: server,
       path: selected.path,
       method: selected.method,
       pathParams,

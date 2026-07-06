@@ -1,12 +1,14 @@
-import * as YAML from 'js-yaml';
-
 import { parseOpenApi } from './parseOpenApi';
 
-import type { Endpoint } from './types';
+import type { LoadMockSchemaResult, OpenApiDocument } from './types';
 
 export async function loadMockSchema(
-  parsedFromEdite: unknown
-): Promise<Endpoint[]> {
-  const parsed: unknown = parsedFromEdite;
-  return parseOpenApi(parsed);
+  parsedFromEditor: unknown
+): Promise<LoadMockSchemaResult> {
+  const parsed = parsedFromEditor as OpenApiDocument;
+
+  return {
+    servers: parsed.servers ?? [],
+    endpoints: parseOpenApi(parsed),
+  };
 }

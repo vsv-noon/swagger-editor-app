@@ -2,12 +2,7 @@ export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
 
 export type ParamLocation = 'path' | 'query' | 'header' | 'cookie';
 export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | { [k: string]: JsonValue }
-  | JsonValue[];
+  string | number | boolean | null | { [k: string]: JsonValue } | JsonValue[];
 
 export interface EndpointParam {
   name: string;
@@ -47,4 +42,24 @@ export interface Endpoint {
   parameters: EndpointParam[];
   requestBody?: RequestBody;
   responses: ResponseInfo[];
+}
+export interface OpenApiDocument {
+  openapi: string;
+  info: unknown;
+  servers?: {
+    url: string;
+    description?: string;
+  }[];
+  paths: Record<string, unknown>;
+}
+export interface LoadMockSchemaResult {
+  servers: {
+    url: string;
+    description?: string;
+  }[];
+  endpoints: Endpoint[];
+}
+export interface Server {
+  url: string;
+  description?: string;
 }

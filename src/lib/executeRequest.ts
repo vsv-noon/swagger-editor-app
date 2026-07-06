@@ -1,4 +1,5 @@
 export type ExecutePayload = {
+  server: string;
   path: string;
   method: string;
   pathParams?: Record<string, string>;
