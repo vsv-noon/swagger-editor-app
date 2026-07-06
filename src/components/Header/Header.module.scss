@@ -11,6 +11,7 @@ $sign-out-btn-color: #46334f;
   position: sticky;
   top: 0;
   z-index: 5;
+  backdrop-filter: blur(15px);
 }
 
 .headerNav {
@@ -53,4 +54,11 @@ $sign-out-btn-color: #46334f;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+}
+
+.navLeft,
+.navRight {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
 }
