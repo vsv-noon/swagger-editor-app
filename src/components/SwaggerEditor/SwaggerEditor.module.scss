@@ -21,6 +21,11 @@
   padding: rem(5px) rem(10px);
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .button:hover {

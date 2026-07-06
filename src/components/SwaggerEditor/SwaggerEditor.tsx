@@ -12,10 +12,9 @@ import {
   lineNumbers,
 } from '@codemirror/view';
 
-import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/constants';
+import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/defaultSchema';
 import { convertFormat } from '@/lib/convert';
 import { detectFormat, parseCode } from '@/lib/parse';
-import { saveSchema } from '@/lib/saveSchema';
 import { useUser } from '@/lib/supabase/useUser';
 
 import { openApiLinterSource } from './openApiLinterSource';
@@ -136,7 +135,10 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
     const code = view.state.doc.toString();
 
     try {
-      await saveSchema(code);
+      await fetch('/api/save', {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+      });
       alert('Saved successfully ✅');
     } catch (error) {
       const typedError = error as Error;

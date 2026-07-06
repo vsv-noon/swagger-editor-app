@@ -2,10 +2,10 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { parse } from 'yaml';
 
 import { detectFormat } from './parse';
-import { createClient } from './supabase/client';
+import { createClient } from './supabase/server';
 
 export async function saveSchema(code: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -33,9 +33,10 @@ export async function saveSchema(code: string) {
     throw new Error(typedError.message || 'Invalid OpenAPI schema');
   }
 
-  const { error } = await supabase.from('schemas').insert([
+  const { data, error } = await supabase.from('schemas').insert([
     {
-      schema: parsed,
+      content: code,
+      content_json: parsed,
       format: detectFormat(code),
       user_id: user.id,
     },
@@ -45,5 +46,5 @@ export async function saveSchema(code: string) {
     throw new Error(error.message);
   }
 
-  return true;
+  return { success: true, data };
 }
