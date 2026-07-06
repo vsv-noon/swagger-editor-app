@@ -11,6 +11,7 @@ import {
   keymap,
   lineNumbers,
 } from '@codemirror/view';
+import { useTranslations } from 'next-intl';
 
 import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/defaultSchema';
 import { convertFormat } from '@/lib/convert';
@@ -33,6 +34,7 @@ function getLanguage(code: string) {
 }
 
 export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
+  const t = useTranslations('SwaggerEditor');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewRef = useRef<EditorView | null>(null);
 
@@ -148,16 +150,21 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
 
   return (
     <div className={styles.swaggerEditorContainer}>
+      <h2>{t('title')}</h2>
+      <p style={{ color: '#666' }}>
+        {t('textStart')} <code>{'{}'}</code> {t('textEnd')}
+      </p>
+
       <div className={styles.buttonsBlock}>
         <button className={styles.button} onClick={handleConvert}>
-          Convert to {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
+          {t('convertButton')} {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
         </button>
         <button
           className={styles.button}
           onClick={handleSave}
           disabled={!canSave}
         >
-          Save
+          {t('saveButton')}
         </button>
       </div>
       <div

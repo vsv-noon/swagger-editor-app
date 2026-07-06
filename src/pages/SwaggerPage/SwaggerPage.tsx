@@ -26,12 +26,6 @@ export default function SwaggerPage({ initialCode }: SwaggerEditorProps) {
 
   return (
     <div>
-      <h2>Smart OpenAPI Editor (Auto-detected: YAML / JSON)</h2>
-      <p style={{ color: '#666' }}>
-        Try erasing the text and writing <code>{'{}'}</code> — The editor will
-        instantly switch to the JSON schema, highlight syntax errors.
-      </p>
-
       <SwaggerEditor value={code} onChange={setCode} />
     </div>
   );

@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { getLatestSchema } from '@/lib/getSchema';
 import SwaggerPage from '@/pages/SwaggerPage/SwaggerPage';
 
@@ -10,7 +12,9 @@ export default async function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <h1>Swagger/OpenAPI UI</h1>
-        <SwaggerPage initialCode={initialCode ?? ''} />
+        <Suspense>
+          <SwaggerPage initialCode={initialCode ?? ''} />
+        </Suspense>
       </main>
     </div>
   );
