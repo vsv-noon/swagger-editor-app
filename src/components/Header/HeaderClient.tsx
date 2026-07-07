@@ -1,9 +1,14 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { User } from '@supabase/supabase-js';
 import { useParams, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
+
+import LocaleSwitcher from '../LocaleSwitcher';
 
 import AuthComponent from './AuthComponent';
 import styles from './Header.module.scss';
@@ -21,25 +26,30 @@ const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
   const isHistory = pathname?.includes('/history');
   const isHome = pathname === '/' || pathname === `/${locale}`;
 
+  const t = useTranslations('Header');
+
   return (
     <header className={styles.header}>
+      <Suspense>
+        <LocaleSwitcher />
+      </Suspense>
       <nav className={styles.headerNav}>
         <div className={styles.navLeft}>
           {!isAbout && (
             <Link className={styles.link} href={`/about`}>
-              About
+              {t('about')}
             </Link>
           )}
           {!isHome && (
             <Link className={styles.link} href={`/`}>
-              Home
+              {t('home')}
             </Link>
           )}
         </div>
         <div className={styles.navRight}>
           {user && !isHistory && (
             <Link className={styles.link} href={`/history`}>
-              History
+              {t('history')}
             </Link>
           )}
 
