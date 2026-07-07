@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
 import { executeRequest } from '@/lib/executeRequest';
 
-import SchemaViewer from './SchemaViewer';
+import styles from './details.module.scss';
+import SchemaExampleViewer from './SchemaExampleViewer';
 import { Endpoint } from './types';
 
 interface Props {
@@ -134,14 +138,16 @@ export default function Details({ selected, server }: Props) {
     -d '${body}'`;
   }
   return (
-    <div>
+    <div className={styles.details}>
       <h3>Details</h3>
 
       {!selected ? (
         <div>Select endpoint</div>
       ) : (
         <>
-          <h4>Parameters</h4>
+          <div className={styles.title}>
+            <h4>Parameters</h4>
+          </div>
 
           {selected.parameters.length === 0 ? (
             <div>No parameters</div>
@@ -153,7 +159,9 @@ export default function Details({ selected, server }: Props) {
             ))
           )}
 
-          <h4>Request Body</h4>
+          <div className={styles.title}>
+            <h4>Request Body</h4>
+          </div>
 
           {selected.requestBody ? (
             <>
@@ -161,61 +169,66 @@ export default function Details({ selected, server }: Props) {
                 <b>Content type:</b> {selected.requestBody.contentType}
               </div>
 
-              {selected.requestBody?.schema && (
-                <>
-                  <h5>Schema</h5>
-                  <SchemaViewer schema={selected.requestBody.schema} />
-                </>
-              )}
-
-              <h5>Example</h5>
-
-              <pre>{JSON.stringify(selected.requestBody.example, null, 2)}</pre>
+              <SchemaExampleViewer
+                schema={selected.requestBody.schema}
+                example={selected.requestBody.example}
+              />
             </>
           ) : (
             <div>No request body</div>
           )}
+          <div className={styles.try}>
+            <button onClick={execute}>Try it Out</button>
+            {selected.parameters.map((p) => (
+              <div key={p.name}>
+                <label>{p.name}</label>
 
-          <button onClick={execute}>Try it Out</button>
-          {selected.parameters.map((p) => (
-            <div key={p.name}>
-              <label>{p.name}</label>
-
-              <input
-                value={params[p.name] ?? ''}
-                onChange={(e) =>
-                  setParams({
-                    ...params,
-                    [p.name]: e.target.value,
-                  })
-                }
-              />
-            </div>
-          ))}
-          {selected.requestBody &&
-            (isBinary ? (
-              <input
-                type="file"
-                onChange={(e) => {
-                  const f = e.target.files?.[0] ?? null;
-                  setFile(f);
-                }}
-              />
-            ) : (
-              showJsonEditor && (
-                <textarea
-                  rows={15}
-                  cols={60}
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
+                <input
+                  value={params[p.name] ?? ''}
+                  onChange={(e) =>
+                    setParams({
+                      ...params,
+                      [p.name]: e.target.value,
+                    })
+                  }
                 />
-              )
+              </div>
             ))}
-          <h4>Responses</h4>
+            {selected.requestBody &&
+              (isBinary ? (
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0] ?? null;
+                    setFile(f);
+                  }}
+                />
+              ) : (
+                showJsonEditor && (
+                  <textarea
+                    rows={15}
+                    cols={60}
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                  />
+                )
+              ))}
+          </div>
+          <div className={styles.title}>
+            <h4>Responses</h4>
+          </div>
           <button onClick={() => setCurl(generateCurl())}>Generate cURL</button>
           {curl && (
             <>
-              <pre>{curl}</pre>
+              <pre>
+                <SyntaxHighlighter
+                  language="bash"
+                  style={vs}
+                  className={styles.code}
+                >
+                  {curl}
+                </SyntaxHighlighter>
+              </pre>
 
               <button onClick={() => navigator.clipboard.writeText(curl)}>
                 Copy
@@ -252,20 +265,13 @@ export default function Details({ selected, server }: Props) {
                 </div>
               )}
 
-              {response.schema !== undefined && (
-                <>
-                  <div>Schema</div>
-                  <SchemaViewer schema={response.schema} />
-                </>
-              )}
-
-              {response.example !== undefined && (
-                <>
-                  <div>Example</div>
-
-                  <pre>{JSON.stringify(response.example, null, 2)}</pre>
-                </>
-              )}
+              {response.schema !== undefined &&
+                response.example !== undefined && (
+                  <SchemaExampleViewer
+                    schema={response.schema}
+                    example={response.example}
+                  />
+                )}
             </div>
           ))}
         </>

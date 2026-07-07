@@ -1,5 +1,71 @@
 @use './viewer.module.scss';
 .details {
-  border-top: 2px solid var(--accent-color);
-  background-color: color-mix(in srgb, var(--accent-color) 10%, white);
+  font-weight: lighter;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  button {
+    background-color: var(--title-color);
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px;
+    max-width: 150px;
+  }
+  button:hover {
+    background-color: var(--accent-color);
+    color: var(--title-color);
+    border-color: var(--title-color);
+  }
+}
+.title {
+  background-color: var(--title-color);
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  padding: 20px;
+  height: 83px;
+  display: flex;
+  align-items: center;
+  h4 {
+    font-weight: 300;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.tab {
+  cursor: pointer;
+  color: var(--accent-color);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.tab:hover {
+  color: #374151;
+}
+
+.active {
+  color: var(--title-color);
+  font-weight: 700;
+}
+.code {
+  font-size: 13px;
+  margin: 0;
+  padding: 12px;
+  border-radius: 6px;
+  width: 70%;
+}
+.try {
+  display: flex;
+  flex-direction: column;
+  button {
+    width: 100px;
+    margin-left: auto;
+  }
 }
