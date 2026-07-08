@@ -6,5 +6,20 @@
   "NotFound": {
     "404": "404 - Page Not Found",
     "home": "Home"
+  },
+  "About": {
+    "name-n": "Nastassia Bialova",
+    "name-v": "Viacheslav Anisimov",
+    "name-k": "Katerina Halitsa",
+    "role-1": "teamlead",
+    "role-2": "developer",
+    "info": "The RS School React Course is a highly structured, community-driven online training program designed to take your frontend skills to an advanced level. Provided entirely free of charge by The Rolling Scopes School community, this course operates on a unique \"Pay it forward\" principle, where students learn from volunteer industry professionals and are later encouraged to return as mentors."
+  },
+  "SwaggerEditor": {
+    "title": "Smart OpenAPI Editor (Auto-detected: YAML / JSON)",
+    "textStart": "Try erasing the text and writing ",
+    "textEnd": " — The editor will instantly switch to the JSON schema, highlight syntax errors.",
+    "convertButton": "Convert to",
+    "saveButton": "Save"
   }
 }
