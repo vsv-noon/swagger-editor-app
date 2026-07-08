@@ -1,12 +1,15 @@
 .swaggerEditorContainer {
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: rem(20px);
 }
+
 .swaggerEditor {
   height: 100%;
+  width: 100%;
   border: rem(1px) solid #ddd;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .buttonsBlock {
@@ -18,7 +21,9 @@
 .button {
   align-self: flex-start;
   background-color: #fff;
-  padding: rem(5px) rem(10px);
+  padding: rem(8px) rem(18px);
+  border: rem(2px) solid #000;
+  border-radius: rem(5px);
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 

@@ -167,11 +167,7 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
           {t('saveButton')}
         </button>
       </div>
-      <div
-        className={styles.swaggerEditor}
-        style={{ height: '100%' }}
-        ref={containerRef}
-      />
+      <div className={styles.swaggerEditor} ref={containerRef} />
     </div>
   );
 }
