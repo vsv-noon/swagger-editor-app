@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -38,14 +39,77 @@ export async function POST(request: NextRequest) {
   const m = method.toUpperCase();
   const hasBody = !(m === 'GET' || m === 'HEAD' || m === 'DELETE');
 
-  const res = await fetch(url, {
-    method: m,
-    headers: finalHeaders,
-    body: hasBody ? (isBinary ? body : body) : undefined,
+  const requestTimestamp = new Date().toISOString();
+  const requestBody =
+    hasBody && body
+      ? typeof body === 'string'
+        ? body
+        : JSON.stringify(body)
+      : '';
+
+  const requestSize = new TextEncoder().encode(requestBody).length;
+  const startedAt = performance.now();
+  let res;
+  let errorDetails = null;
+
+  try {
+    res = await fetch(url, {
+      method: m,
+      headers: finalHeaders,
+      body: hasBody ? (isBinary ? body : body) : undefined,
+    });
+  } catch (error) {
+    errorDetails = {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : null,
+    };
+
+    throw error;
+  }
+  const duration = Math.round(performance.now() - startedAt);
+  const text = await res.text();
+  const responseSize = new TextEncoder().encode(text).length;
+
+  //Подключаюсь к базе
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+  );
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  await supabase.from('requests_history').insert([
+    {
+      request_method: m,
+      endpoint: path,
+      URL: url,
+      response_status_code: res.status,
+      request_duration: duration,
+      request_size: requestSize,
+      response_size: responseSize,
+      error_details: errorDetails ? JSON.stringify(errorDetails) : null,
+      user_id: user?.id ?? null,
+    },
+  ]);
+
+  //проверка
+  const { data: logs, error: logsError } = await supabase
+    .from('requests_history')
+    .select('*');
+
+  console.log(logs);
+  console.log('error:', logsError);
+  console.log({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   });
 
-  const text = await res.text();
-
+  console.log(user);
+  const { data: log, error: error } = await supabase
+    .from('schemas')
+    .select('*');
+  console.log(log);
+  console.log('error:', error);
   let parsed: unknown = text;
   const contentType = res.headers.get('content-type') ?? '';
   if (contentType.includes('application/json')) {
