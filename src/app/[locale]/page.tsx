@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 
+import Loader from '@/components/Loader';
 import { getLatestSchema } from '@/lib/getSchema';
 import SwaggerPage from '@/pages/SwaggerPage/SwaggerPage';
 
@@ -12,7 +13,7 @@ export default async function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <h1>Swagger/OpenAPI UI</h1>
-        <Suspense>
+        <Suspense fallback={<Loader variant="fullscreen" />}>
           <SwaggerPage initialCode={initialCode ?? ''} />
         </Suspense>
       </main>
