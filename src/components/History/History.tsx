@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 
 import Details from './Details';
 import styles from './History.module.scss';
+import { trimUrl } from './utils';
 
 export type HistoryResponse = {
   requestDuration: string;
@@ -18,7 +19,6 @@ export type HistoryResponse = {
   endpoint: string;
   URL: string;
   id: string;
-  user_id?: string;
 };
 
 type HistoryProps = {
@@ -41,7 +41,10 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           return (
             <li key={item.id}>
               <Link href={`?details=${item.id}`} scroll={false}>
-                {item.requestMethod} {item.URL}/{item.endpoint}
+                <div>{trimUrl(item.URL)}</div>
+                <div>{item.endpoint}</div>
+                <div>{item.requestMethod}</div>
+                <div>details &gt;&gt; </div>
               </Link>
               {details === String(item.id) && (
                 <Details requestItem={item}></Details>
