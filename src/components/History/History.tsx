@@ -18,6 +18,7 @@ export type HistoryResponse = {
   endpoint: string;
   URL: string;
   id: string;
+  user_id?: string;
 };
 
 type HistoryProps = {
@@ -27,7 +28,7 @@ type HistoryProps = {
 const History: React.FC<HistoryProps> = ({ history }) => {
   const searchParams = useSearchParams();
 
-  const openDetails = searchParams?.get('openDetails');
+  const details = searchParams?.get('details');
 
   if (history.length === 0) {
     return <div>You haven&apos;t executed any requests yet</div>;
@@ -39,10 +40,12 @@ const History: React.FC<HistoryProps> = ({ history }) => {
         {history.map((item) => {
           return (
             <li key={item.id}>
-              <Link href={'?openDetails=true'} scroll={false}>
+              <Link href={`?details=${item.id}`} scroll={false}>
                 {item.requestMethod} {item.URL}/{item.endpoint}
               </Link>
-              {openDetails === 'true' && <Details requestItem={item}></Details>}
+              {details === String(item.id) && (
+                <Details requestItem={item}></Details>
+              )}
             </li>
           );
         })}

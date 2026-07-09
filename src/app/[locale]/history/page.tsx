@@ -7,9 +7,12 @@ const HistoryPage = async () => {
 
   const response = (data as HistoryResponse[]) ?? [];
 
-  console.log('history-r: ' + response);
+  const clearResponse = response.map((responseItem) => {
+    const { user_id, ...itemsWithoutUserId } = responseItem;
+    return itemsWithoutUserId;
+  });
 
-  return <History history={response}></History>;
+  return <History history={clearResponse}></History>;
 };
 
 export default HistoryPage;
