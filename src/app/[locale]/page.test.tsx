@@ -9,7 +9,7 @@ vi.mock('@/lib/getSchema', () => ({
   getLatestSchema: vi.fn(),
 }));
 
-vi.mock('@/pages/SwaggerPage/SwaggerPage', () => ({
+vi.mock('@/_pages/SwaggerPage/SwaggerPage', () => ({
   default: ({ initialCode }: { initialCode: string }) => (
     <div data-testid="mock-swagger-page">Code: {initialCode}</div>
   ),
