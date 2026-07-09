@@ -1,5 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   const {
@@ -70,46 +71,29 @@ export async function POST(request: NextRequest) {
   const text = await res.text();
   const responseSize = new TextEncoder().encode(text).length;
 
-  //Подключаюсь к базе
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-  );
+  const supabaseClient = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
-  await supabase.from('requests_history').insert([
+  } = await supabaseClient.auth.getUser();
+
+  const { data, error } = await supabaseClient.from('requests_history').insert([
     {
-      request_method: m,
-      endpoint: path,
-      URL: url,
-      response_status_code: res.status,
       request_duration: duration,
+      'response_status code': res.status,
+      request_method: m,
       request_size: requestSize,
       response_size: responseSize,
+      endpoint: path,
       error_details: errorDetails ? JSON.stringify(errorDetails) : null,
       user_id: user?.id ?? null,
+      URL: url,
     },
   ]);
 
-  //проверка
-  const { data: logs, error: logsError } = await supabase
+  const { data: logs, error: logsError } = await supabaseClient
     .from('requests_history')
     .select('*');
 
-  console.log(logs);
-  console.log('error:', logsError);
-  console.log({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-  });
-
-  console.log(user);
-  const { data: log, error: error } = await supabase
-    .from('schemas')
-    .select('*');
-  console.log(log);
-  console.log('error:', error);
   let parsed: unknown = text;
   const contentType = res.headers.get('content-type') ?? '';
   if (contentType.includes('application/json')) {
