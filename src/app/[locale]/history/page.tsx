@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
+
+const HistoryAndAnalytics = dynamic(
+  () => import('@/components/HistoryAndAnalytics/HistoryAndAnalytics')
+);
+
 const HistoryPage = async () => {
-  return <div>History Page</div>;
+  return <HistoryAndAnalytics />;
 };
 
 export default HistoryPage;

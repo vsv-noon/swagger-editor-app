@@ -11,11 +11,11 @@ import {
   keymap,
   lineNumbers,
 } from '@codemirror/view';
+import { useTranslations } from 'next-intl';
 
-import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/constants';
+import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/defaultSchema';
 import { convertFormat } from '@/lib/convert';
 import { detectFormat, parseCode } from '@/lib/parse';
-import { saveSchema } from '@/lib/saveSchema';
 import { useUser } from '@/lib/supabase/useUser';
 
 import { openApiLinterSource } from './openApiLinterSource';
@@ -34,6 +34,7 @@ function getLanguage(code: string) {
 }
 
 export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
+  const t = useTranslations('SwaggerEditor');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewRef = useRef<EditorView | null>(null);
 
@@ -136,7 +137,10 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
     const code = view.state.doc.toString();
 
     try {
-      await saveSchema(code);
+      await fetch('/api/save', {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+      });
       alert('Saved successfully ✅');
     } catch (error) {
       const typedError = error as Error;
@@ -146,23 +150,24 @@ export default function SwaggerEditor({ value, onChange }: SwaggerEditorProps) {
 
   return (
     <div className={styles.swaggerEditorContainer}>
+      <h2>{t('title')}</h2>
+      <p style={{ color: '#666' }}>
+        {t('textStart')} <code>{'{}'}</code> {t('textEnd')}
+      </p>
+
       <div className={styles.buttonsBlock}>
         <button className={styles.button} onClick={handleConvert}>
-          Convert to {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
+          {t('convertButton')} {liveFormat === 'yaml' ? 'JSON' : 'YAML'}{' '}
         </button>
         <button
           className={styles.button}
           onClick={handleSave}
           disabled={!canSave}
         >
-          Save
+          {t('saveButton')}
         </button>
       </div>
-      <div
-        className={styles.swaggerEditor}
-        style={{ height: '100%' }}
-        ref={containerRef}
-      />
+      <div className={styles.swaggerEditor} ref={containerRef} />
     </div>
   );
 }
