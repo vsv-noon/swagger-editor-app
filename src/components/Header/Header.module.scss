@@ -1,0 +1,84 @@
+$sign-in-btn-color: #2c9fc7;
+$sign-up-btn-color: #9abf17;
+$sign-out-btn-color: #46334f;
+
+$sign-in-btn-hover: #a0d8eb;
+$sign-up-btn-hover: #dbf092;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 1.55rem;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(15px);
+}
+
+.headerNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.headerButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.06rem;
+}
+
+.button {
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border: var(--border);
+}
+
+.signInButton {
+  color: $sign-in-btn-color;
+  border-color: $sign-in-btn-color;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: $sign-in-btn-hover;
+  }
+}
+
+.signUpButton {
+  color: $sign-up-btn-color;
+  border-color: $sign-up-btn-color;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: $sign-up-btn-hover;
+  }
+}
+
+.signOutButton {
+  color: white;
+  border-color: $sign-out-btn-color;
+  background-color: $sign-out-btn-color;
+  transition: opacity 0.3s ease;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.8);
+  }
+}
+
+.navLeft,
+.navRight {
+  display: flex;
+  gap: 5rem;
+  align-items: center;
+  font-size: large;
+}
