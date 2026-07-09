@@ -1,11 +1,11 @@
 import { useRouter } from '@/i18n/navigation';
 
-import { HistoryRequest } from './History';
+import { HistoryResponse } from './History';
 import style from './History.module.scss';
 import { parseObjectKeys } from './utils';
 
 type DetailsProps = {
-  requestItem: HistoryRequest;
+  requestItem: HistoryResponse;
 };
 
 const Details: React.FC<DetailsProps> = ({ requestItem }) => {

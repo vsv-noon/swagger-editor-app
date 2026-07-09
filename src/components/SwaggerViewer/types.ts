@@ -2,12 +2,7 @@ export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
 
 export type ParamLocation = 'path' | 'query' | 'header' | 'cookie';
 export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | { [k: string]: JsonValue }
-  | JsonValue[];
+  string | number | boolean | null | { [k: string]: JsonValue } | JsonValue[];
 
 export interface EndpointParam {
   name: string;

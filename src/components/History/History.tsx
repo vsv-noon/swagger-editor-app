@@ -7,7 +7,7 @@ import { Link } from '@/i18n/navigation';
 import Details from './Details';
 import styles from './History.module.scss';
 
-export type HistoryRequest = {
+export type HistoryResponse = {
   requestDuration: string;
   statusCode: string;
   requestTimestamp: string;
@@ -20,15 +20,23 @@ export type HistoryRequest = {
   id: string;
 };
 
-const History: React.FC<HistoryRequest[]> = (props: HistoryRequest[]) => {
+type HistoryProps = {
+  history: HistoryResponse[];
+};
+
+const History: React.FC<HistoryProps> = ({ history }) => {
   const searchParams = useSearchParams();
 
   const openDetails = searchParams?.get('openDetails');
+
+  if (history.length === 0) {
+    return <div>You haven&apos;t executed any requests yet</div>;
+  }
   return (
     <div>
       <h2>History and analytics:</h2>
       <ul>
-        {props.map((item) => {
+        {history.map((item) => {
           return (
             <li key={item.id}>
               <Link href={'?openDetails=true'} scroll={false}>
