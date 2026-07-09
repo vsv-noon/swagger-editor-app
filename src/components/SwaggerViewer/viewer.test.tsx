@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect, it, vi } from 'vitest';
+import { expect, it, vi, describe } from 'vitest';
 
 import { loadMockSchema } from './mockSchema';
 import Viewer from './Viewer';
@@ -20,46 +20,48 @@ vi.mock('./ServerSelector', () => ({
     <div data-testid="server-selector">{value}</div>
   ),
 }));
-it('shows loading while schema is loading', () => {
-  vi.mocked(loadMockSchema).mockReturnValue(new Promise(() => {}));
+describe('Viewer tests', () => {
+  it('shows loading while schema is loading', () => {
+    vi.mocked(loadMockSchema).mockReturnValue(new Promise(() => {}));
 
-  render(<Viewer parsed={{}} />);
+    render(<Viewer parsed={{}} />);
 
-  expect(screen.getByText('Loading...')).toBeInTheDocument();
-});
-it('renders endpoint groups', async () => {
-  vi.mocked(loadMockSchema).mockResolvedValue({
-    servers: [],
-    endpoints: [
-      {
-        method: 'get',
-        path: '/users/list',
-        parameters: [],
-        responses: [],
-      },
-    ],
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
+  it('renders endpoint groups', async () => {
+    vi.mocked(loadMockSchema).mockResolvedValue({
+      servers: [],
+      endpoints: [
+        {
+          method: 'get',
+          path: '/users/list',
+          parameters: [],
+          responses: [],
+        },
+      ],
+    });
 
-  render(<Viewer parsed={{}} />);
+    render(<Viewer parsed={{}} />);
 
-  expect(await screen.findByText('users')).toBeInTheDocument();
-});
-it('opens group', async () => {
-  const user = userEvent.setup();
+    expect(await screen.findByText('users')).toBeInTheDocument();
+  });
+  it('opens group', async () => {
+    const user = userEvent.setup();
 
-  render(<Viewer parsed={{}} />);
+    render(<Viewer parsed={{}} />);
 
-  await user.click(await screen.findByText('users'));
+    await user.click(await screen.findByText('users'));
 
-  expect(screen.getByText('/users/list')).toBeInTheDocument();
-});
-it('shows endpoint details after selecting endpoint', async () => {
-  const user = userEvent.setup();
+    expect(screen.getByText('/users/list')).toBeInTheDocument();
+  });
+  it('shows endpoint details after selecting endpoint', async () => {
+    const user = userEvent.setup();
 
-  render(<Viewer parsed={{}} />);
+    render(<Viewer parsed={{}} />);
 
-  await user.click(await screen.findByText('users'));
-  await user.click(screen.getByText('/users/list'));
+    await user.click(await screen.findByText('users'));
+    await user.click(screen.getByText('/users/list'));
 
-  expect(screen.getByTestId('details')).toHaveTextContent('/users/list');
+    expect(screen.getByTestId('details')).toHaveTextContent('/users/list');
+  });
 });
