@@ -6,6 +6,7 @@ import { useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 import styles from './AuthForms.module.scss';
+import { AuthInput } from './AuthInput';
 import { signInSchema, SignInInput } from './utils/validation';
 
 const SignInForm = () => {
@@ -41,49 +42,22 @@ const SignInForm = () => {
     >
       <h1 className={styles.authHeader}>{t('signIn')}: </h1>
       <div className={styles.authInputsGroup}>
-        <Controller
+        <AuthInput
+          control={control}
           name="email"
+          id="signIn-email"
+          type="email"
+          htmlFor="signIn-email"
+          label="email"
+        ></AuthInput>
+        <AuthInput
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <div className={styles.formItem}>
-              <div className={styles.authInputContainer}>
-                <label htmlFor="signIn-email">{t('email')}:</label>
-                <input
-                  id="signIn-email"
-                  type="email"
-                  className={styles.authInput}
-                  required
-                  {...field}
-                ></input>
-              </div>
-              {error && (
-                <span className={styles.authErrorMsg}>{error.message}</span>
-              )}
-            </div>
-          )}
-        ></Controller>
-
-        <Controller
           name="password"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <div className={styles.formItem}>
-              <div className={styles.authInputContainer}>
-                <label htmlFor="signIn-password">{t('password')}:</label>
-                <input
-                  id="signIn-password"
-                  type="password"
-                  className={styles.authInput}
-                  required
-                  {...field}
-                ></input>
-              </div>
-              {error && (
-                <span className={styles.authErrorMsg}>{error.message}</span>
-              )}
-            </div>
-          )}
-        ></Controller>
+          id="signIn-password"
+          type="password"
+          htmlFor="signIn-password"
+          label="password"
+        ></AuthInput>
       </div>
       <div className={styles.authPasswordChecker}></div>
 
