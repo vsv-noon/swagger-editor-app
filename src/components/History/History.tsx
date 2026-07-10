@@ -34,17 +34,23 @@ const History: React.FC<HistoryProps> = ({ history }) => {
     return <div>You haven&apos;t executed any requests yet</div>;
   }
   return (
-    <div>
+    <div className={styles.historyWrapper}>
       <h2>History and analytics:</h2>
-      <ul>
+      <ul className={styles.historyList}>
         {history.map((item) => {
           return (
-            <li key={item.id}>
-              <Link href={`?details=${item.id}`} scroll={false}>
+            <li className={styles.historyItem} key={item.id}>
+              <Link
+                className={styles.historyLink}
+                href={`?details=${item.id}`}
+                scroll={false}
+              >
                 <div>{trimUrl(item.URL)}</div>
                 <div>{item.endpoint}</div>
                 <div>{item.requestMethod}</div>
-                <div>details &gt;&gt; </div>
+                <div className={styles.historyDetailsPointer}>
+                  details &gt;&gt;{' '}
+                </div>
               </Link>
               {details === String(item.id) && (
                 <Details requestItem={item}></Details>

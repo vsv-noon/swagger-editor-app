@@ -1,7 +1,7 @@
 import { useRouter } from '@/i18n/navigation';
 
 import { HistoryResponse } from './History';
-import style from './History.module.scss';
+import styles from './History.module.scss';
 import { parseObjectKeys } from './utils';
 
 type DetailsProps = {
@@ -18,16 +18,25 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
     parseObjectKeys(item)
   );
   return (
-    <div onClick={closeDetails}>
+    <div className={styles.historyDetails}>
       <h2>Details</h2>
-      {entries.map((entry, index) => {
-        return (
-          <div key={index}>
-            {entry[0]}: {entry[1]}
-          </div>
-        );
-      })}
-      <button>Close</button>
+      <div className={styles.detailsList}>
+        {entries.map((entry, index) => {
+          if (entry[0] === 'id') {
+            return;
+          }
+          return (
+            <div className={styles.detailsItem} key={index}>
+              <div>{entry[0]}:</div>
+              <div>{entry[1]}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <button className={styles.detailsButton} onClick={closeDetails}>
+        Close
+      </button>
     </div>
   );
 };
