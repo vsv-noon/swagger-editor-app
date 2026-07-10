@@ -45,9 +45,7 @@ export async function updateSession(request: NextRequest) {
   if (
     request.nextUrl.pathname !== '/' &&
     !user &&
-    !request.nextUrl.pathname.includes('/signin') &&
-    !request.nextUrl.pathname.includes('/signup') &&
-    !request.nextUrl.pathname.includes('/about')
+    request.nextUrl.pathname.includes('/history')
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
@@ -55,11 +53,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (
-    user &&
-    (request.nextUrl.pathname.includes('/signin') ||
-      request.nextUrl.pathname.includes('/signup'))
-  ) {
+  if (user && request.nextUrl.pathname.includes('/auth')) {
     const url = request.nextUrl.clone();
     url.pathname = '/';
     return NextResponse.redirect(url);
