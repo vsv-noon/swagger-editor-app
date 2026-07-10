@@ -1,4 +1,4 @@
-import History from '@/components/History/History';
+import HistoryAndAnalytics from '@/components/HistoryAndAnalytics/HistoryAndAnalytics';
 import { createClient } from '@/lib/supabase/server';
 
 const HistoryPage = async () => {
@@ -37,7 +37,7 @@ const HistoryPage = async () => {
     };
   });
 
-  return <History history={clearResponse}></History>;
+  return <HistoryAndAnalytics history={clearResponse}></HistoryAndAnalytics>;
 };
 
 export default HistoryPage;

@@ -1,7 +1,7 @@
 import { useRouter } from '@/i18n/navigation';
 
-import { HistoryResponse } from './History';
-import styles from './History.module.scss';
+import { HistoryResponse } from './HistoryAndAnalytics';
+import styles from './HistoryAndAnalytics.module.scss';
 import { parseObjectKeys } from './utils';
 
 type DetailsProps = {
