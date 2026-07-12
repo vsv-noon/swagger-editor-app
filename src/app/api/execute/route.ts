@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
   const { data, error } = await supabaseClient.from('requests_history').insert([
     {
       request_duration: duration,
-      'response_status code': res.status,
+      response_status_code: res.status,
       request_method: m,
       request_size: requestSize,
       response_size: responseSize,
