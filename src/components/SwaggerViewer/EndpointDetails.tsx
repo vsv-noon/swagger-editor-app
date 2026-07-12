@@ -103,7 +103,7 @@ export default function Details({ selected, server }: Props) {
   function generateCurl() {
     if (!selected) return '';
 
-    let url = 'http://localhost:8080/api/v3' + selected.path;
+    let url = server + selected.path;
 
     for (const p of selected.parameters.filter((p) => p.in === 'path')) {
       url = url.replace(
