@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 import styles from './AuthForms.module.scss';
+import { AuthInput } from './AuthInput';
 import { signUpSchema, SignUpInput } from './utils/validation';
 
 const SignUpForm = () => {
@@ -48,71 +49,30 @@ const SignUpForm = () => {
     >
       <h1 className={styles.authHeader}>{t('signUp')}: </h1>
       <div className={styles.authInputsGroup}>
-        <Controller
+        <AuthInput
+          control={control}
           name="name"
+          id="signUp-name"
+          type="name"
+          htmlFor="signUp-name"
+          label="name"
+        ></AuthInput>
+        <AuthInput
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <div className={styles.formItem}>
-              <div className={styles.authInputContainer}>
-                <label htmlFor="signIn-email">{t('name')}:</label>
-                <input
-                  id="signIn-name"
-                  type="name"
-                  className={styles.authInput}
-                  required
-                  {...field}
-                ></input>
-              </div>
-              {error && (
-                <span className={styles.authErrorMsg}>{error.message}</span>
-              )}
-            </div>
-          )}
-        ></Controller>
-
-        <Controller
           name="email"
+          id="signUp-email"
+          type="email"
+          htmlFor="signUp-email"
+          label="email"
+        ></AuthInput>
+        <AuthInput
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <div className={styles.formItem}>
-              <div className={styles.authInputContainer}>
-                <label htmlFor="signIn-email">{t('email')}:</label>
-                <input
-                  id="signIn-email"
-                  type="email"
-                  className={styles.authInput}
-                  required
-                  {...field}
-                ></input>
-              </div>
-              {error && (
-                <span className={styles.authErrorMsg}>{error.message}</span>
-              )}
-            </div>
-          )}
-        ></Controller>
-
-        <Controller
           name="password"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <div className={styles.formItem}>
-              <div className={styles.authInputContainer}>
-                <label htmlFor="signIn-password">{t('password')}:</label>
-                <input
-                  id="signIn-password"
-                  type="password"
-                  className={styles.authInput}
-                  required
-                  {...field}
-                ></input>
-              </div>
-              {error && (
-                <span className={styles.authErrorMsg}>{error.message}</span>
-              )}
-            </div>
-          )}
-        ></Controller>
+          id="signUp-password"
+          type="password"
+          htmlFor="signUp-password"
+          label="password"
+        ></AuthInput>
       </div>
       <div className={styles.authPasswordChecker}></div>
 
