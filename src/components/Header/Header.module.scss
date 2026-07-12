@@ -5,6 +5,8 @@ $sign-out-btn-color: #46334f;
 $sign-in-btn-hover: #a0d8eb;
 $sign-up-btn-hover: #dbf092;
 
+$scrolled-color: #cab0d64d;
+
 .header {
   display: flex;
   align-items: center;
@@ -15,6 +17,10 @@ $sign-up-btn-hover: #dbf092;
   top: 0;
   z-index: 5;
   backdrop-filter: blur(15px);
+  transition: background-color 0.3s ease;
+  &.scrolled {
+    background-color: $scrolled-color;
+  }
 }
 
 .headerNav {

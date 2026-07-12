@@ -26,6 +26,9 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
           if (entry[0] === 'id') {
             return;
           }
+          if (entry[0] === 'request') {
+            return;
+          }
           return (
             <div className={styles.detailsItem} key={index}>
               <div>{entry[0]}:</div>
