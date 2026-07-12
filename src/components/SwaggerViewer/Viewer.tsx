@@ -48,7 +48,7 @@ export default function Viewer({ parsed }: ViewerProps) {
   );
 
   return (
-    <div>
+    <div className={styles.container}>
       <h3>Servers</h3>
 
       <div>

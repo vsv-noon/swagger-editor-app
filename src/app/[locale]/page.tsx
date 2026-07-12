@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
+import SwaggerPage from '@/_pages/SwaggerPage/SwaggerPage';
 import { getLatestSchema } from '@/lib/getSchema';
-import SwaggerPage from '@/pages/SwaggerPage/SwaggerPage';
 
 import styles from './page.module.scss';
 

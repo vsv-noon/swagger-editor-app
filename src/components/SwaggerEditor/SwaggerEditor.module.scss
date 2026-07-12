@@ -1,7 +1,16 @@
 .swaggerEditorContainer {
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: rem(20px);
+
+  @media (orientation: landscape) {
+    width: 50%;
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+  }
 }
 .swaggerEditor {
   height: 100%;
