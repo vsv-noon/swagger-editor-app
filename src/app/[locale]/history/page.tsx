@@ -1,11 +1,43 @@
-import dynamic from 'next/dynamic';
-
-const HistoryAndAnalytics = dynamic(
-  () => import('@/components/HistoryAndAnalytics/HistoryAndAnalytics')
-);
+import HistoryAndAnalytics from '@/components/HistoryAndAnalytics/HistoryAndAnalytics';
+import { createClient } from '@/lib/supabase/server';
 
 const HistoryPage = async () => {
-  return <HistoryAndAnalytics />;
+  const supabase = createClient();
+  const { data } = await (await supabase).from('requests_history').select('*');
+
+  if (!data) {
+    return [];
+  }
+
+  const clearResponse = data.map((responseItem) => {
+    const {
+      request_duration,
+      response_status_code,
+      created_at,
+      request_method,
+      request_size,
+      response_size,
+      error_details,
+      endpoint,
+      URL,
+      id,
+      user_id,
+    } = responseItem;
+    return {
+      requestDuration: request_duration,
+      statusCode: response_status_code,
+      requestTimestamp: created_at,
+      requestMethod: request_method,
+      requestSize: request_size,
+      responseSize: response_size,
+      errorDetails: error_details,
+      endpoint: endpoint,
+      URL: URL,
+      id: id,
+    };
+  });
+
+  return <HistoryAndAnalytics history={clearResponse}></HistoryAndAnalytics>;
 };
 
 export default HistoryPage;

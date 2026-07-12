@@ -1,6 +1,6 @@
 'use client';
 
-import SignUpForm from '@/components/authForms/SignUpForm';
+import SignUpForm from '@/components/AuthForms/SignUpForm';
 
 import styles from '../auth.module.scss';
 
