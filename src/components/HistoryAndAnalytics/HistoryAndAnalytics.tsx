@@ -8,7 +8,7 @@ import { routing } from '@/i18n/routing';
 
 import Details from './Details';
 import styles from './HistoryAndAnalytics.module.scss';
-import { trimUrl } from './utils';
+import { sortByTimestamp, trimUrl } from './utils';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -42,6 +42,8 @@ const HistoryAndAnalytics: React.FC<HistoryProps> = ({ history }) => {
   if (history.length === 0) {
     return <div>You haven&apos;t executed any requests yet</div>;
   }
+
+  history = sortByTimestamp(history);
   return (
     <div className={styles.historyWrapper}>
       <h2>{t('title')}</h2>
