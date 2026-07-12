@@ -71,6 +71,13 @@ export async function POST(request: NextRequest) {
   const text = await res.text();
   const responseSize = new TextEncoder().encode(text).length;
 
+  const fullRequestText = [
+    `${m} ${url}`,
+    ...Object.entries(finalHeaders).map(([key, value]) => `${key}: ${value}`),
+    '',
+    requestBody,
+  ].join('\n');
+
   const supabaseClient = await createClient();
   const {
     data: { user },
@@ -79,7 +86,7 @@ export async function POST(request: NextRequest) {
   const { data, error } = await supabaseClient.from('requests_history').insert([
     {
       request_duration: duration,
-      'response_status code': res.status,
+      response_status_code: res.status,
       request_method: m,
       request_size: requestSize,
       response_size: responseSize,
@@ -87,6 +94,7 @@ export async function POST(request: NextRequest) {
       error_details: errorDetails ? JSON.stringify(errorDetails) : null,
       user_id: user?.id ?? null,
       URL: url,
+      request: fullRequestText,
     },
   ]);
 

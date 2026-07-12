@@ -25,6 +25,7 @@ export type HistoryResponse = {
   endpoint: string;
   URL: string;
   id: string;
+  request: string;
 };
 
 type HistoryProps = {
@@ -53,9 +54,7 @@ const HistoryAndAnalytics: React.FC<HistoryProps> = ({ history }) => {
                 href={`?details=${item.id}`}
                 scroll={false}
               >
-                <div>{trimUrl(item.URL)}</div>
-                <div>{item.endpoint}</div>
-                <div>{item.requestMethod}</div>
+                <div>{item.request}</div>
                 <div className={styles.historyDetailsPointer}>
                   details &gt;&gt;{' '}
                 </div>
