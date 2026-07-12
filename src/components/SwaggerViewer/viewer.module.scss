@@ -8,6 +8,15 @@
 %accordionBlocks {
   width: 100%;
 }
+.container {
+  @media (orientation: landscape) {
+    width: 50%;
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+  }
+}
 .endpoints {
   display: flex;
   gap: 40px;

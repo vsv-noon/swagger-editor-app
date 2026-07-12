@@ -93,7 +93,7 @@ export function parseOpenApi(raw: unknown): Endpoint[] {
 
   return result;
 }
-function parseRequestBody(
+export function parseRequestBody(
   body: unknown,
   schemas: Record<string, unknown>
 ): RequestBody | undefined {
@@ -121,7 +121,7 @@ function parseRequestBody(
   };
 }
 
-function parseResponses(
+export function parseResponses(
   raw: unknown,
   schemas: Record<string, unknown>
 ): ResponseInfo[] {
@@ -175,7 +175,7 @@ function parseResponses(
 function isResponseObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null;
 }
-function resolveSchema(
+export function resolveSchema(
   schema: unknown,
   schemas: Record<string, unknown>
 ): OpenApiSchema | undefined {
@@ -248,7 +248,7 @@ function resolveSchema(
 
   return result;
 }
-function generateExample(schema?: OpenApiSchema): JsonValue {
+export function generateExample(schema?: OpenApiSchema): JsonValue {
   if (!schema) return null;
 
   if (schema.example !== undefined) {

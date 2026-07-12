@@ -181,9 +181,10 @@ export default function Details({ selected, server }: Props) {
             <button onClick={execute}>Try it Out</button>
             {selected.parameters.map((p) => (
               <div key={p.name}>
-                <label>{p.name}</label>
+                <label htmlFor={p.name}>{p.name}</label>
 
                 <input
+                  id={p.name}
                   value={params[p.name] ?? ''}
                   onChange={(e) =>
                     setParams({
@@ -197,6 +198,7 @@ export default function Details({ selected, server }: Props) {
             {selected.requestBody &&
               (isBinary ? (
                 <input
+                  data-testid="file-input"
                   type="file"
                   onChange={(e) => {
                     const f = e.target.files?.[0] ?? null;

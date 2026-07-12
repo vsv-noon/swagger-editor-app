@@ -10,6 +10,8 @@ import Viewer from '@/components/SwaggerViewer/Viewer';
 import { OPEN_API_EDITOR_INITIAL_VALUE } from '@/constants/defaultSchema';
 import { parseCode } from '@/lib/parse';
 
+import styles from './SwaggerPage.module.scss';
+
 type SwaggerEditorProps = {
   initialCode: string;
 };
@@ -27,7 +29,7 @@ export default function SwaggerPage({ initialCode }: SwaggerEditorProps) {
   const parsed = parseCode(code);
 
   return (
-    <div>
+    <div className={styles.container}>
       <SwaggerEditor value={code} onChange={setCode} />
       <Viewer parsed={parsed?.data} />
     </div>
