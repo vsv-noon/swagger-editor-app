@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { User } from '@supabase/supabase-js';
 import { usePathname } from 'next/navigation';
@@ -26,31 +26,31 @@ type NavItem = {
 };
 const NAVIGATION: NavItem[] = [
   {
-    label: 'Home',
+    label: 'home',
     path: '/',
     role: 'all',
     availableLinks: [PATHS.about, PATHS.history, PATHS.signin, PATHS.signup],
   },
   {
-    label: 'About',
+    label: 'about',
     path: '/about',
     role: 'all',
     availableLinks: [PATHS.home, PATHS.history, PATHS.signin, PATHS.signup],
   },
   {
-    label: 'History',
+    label: 'history',
     path: '/history',
     role: 'user',
     availableLinks: [PATHS.home, PATHS.about],
   },
   {
-    label: 'Sign In',
+    label: 'signIn',
     path: '/auth/signin',
     role: 'guest',
     availableLinks: [PATHS.home, PATHS.about, PATHS.signin, PATHS.signup],
   },
   {
-    label: 'Sign Up',
+    label: 'signUp',
     path: '/auth/signup',
     role: 'guest',
     availableLinks: [PATHS.home, PATHS.about, PATHS.signin, PATHS.signup],
@@ -60,11 +60,21 @@ const NAVIGATION: NavItem[] = [
 const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
   const pathname = usePathname();
   const isAuth = !!user;
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const t = useTranslations('Header');
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isScrolled && styles.scrolled}`}>
       <Suspense>
         <LocaleSwitcher />
       </Suspense>
@@ -78,7 +88,7 @@ const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
             (item.role === 'user' && isAuth);
           return isVisible && isAccessed ? (
             <Link key={item.path} className={styles.link} href={item.path}>
-              {item.label}
+              {t(item.label)}
             </Link>
           ) : null;
         })}

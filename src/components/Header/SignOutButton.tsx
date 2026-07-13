@@ -26,29 +26,12 @@ const SignOutButton: React.FC<AuthProps> = ({ user }) => {
   return (
     <div className={styles.headerButtons}>
       {user && (
-        //   <>
-        //     <Link
-        //       href="/auth/signin"
-        //       className={`${styles.signInButton} ${styles.button}`}
-        //     >
-        //       {t('signIn')}
-        //     </Link>
-        //     <Link
-        //       href="/auth/signup"
-        //       className={`${styles.signUpButton} ${styles.button}`}
-        //     >
-        //       {t('signUp')}
-        //     </Link>
-        //   </>
-        // ) : (
-        //   <>
         <button
           className={`${styles.signOutButton} ${styles.button}`}
           onClick={onSignOut}
         >
           {t('signOut')}
         </button>
-        // </>
       )}
     </div>
   );

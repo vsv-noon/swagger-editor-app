@@ -8,7 +8,7 @@ import { routing } from '@/i18n/routing';
 
 import Details from './Details';
 import styles from './HistoryAndAnalytics.module.scss';
-import { trimUrl } from './utils';
+import { sortByTimestamp, trimUrl } from './utils';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -25,6 +25,7 @@ export type HistoryResponse = {
   endpoint: string;
   URL: string;
   id: string;
+  request: string;
 };
 
 type HistoryProps = {
@@ -41,6 +42,8 @@ const HistoryAndAnalytics: React.FC<HistoryProps> = ({ history }) => {
   if (history.length === 0) {
     return <div>You haven&apos;t executed any requests yet</div>;
   }
+
+  history = sortByTimestamp(history);
   return (
     <div className={styles.historyWrapper}>
       <h2>{t('title')}</h2>
@@ -53,9 +56,7 @@ const HistoryAndAnalytics: React.FC<HistoryProps> = ({ history }) => {
                 href={`?details=${item.id}`}
                 scroll={false}
               >
-                <div>{trimUrl(item.URL)}</div>
-                <div>{item.endpoint}</div>
-                <div>{item.requestMethod}</div>
+                <div>{item.request}</div>
                 <div className={styles.historyDetailsPointer}>
                   details &gt;&gt;{' '}
                 </div>

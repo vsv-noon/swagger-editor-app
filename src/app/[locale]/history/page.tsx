@@ -22,6 +22,7 @@ const HistoryPage = async () => {
       URL,
       id,
       user_id,
+      request,
     } = responseItem;
     return {
       requestDuration: request_duration,
@@ -34,6 +35,7 @@ const HistoryPage = async () => {
       endpoint: endpoint,
       URL: URL,
       id: id,
+      request: request,
     };
   });
 

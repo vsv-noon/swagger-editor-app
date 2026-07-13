@@ -80,6 +80,13 @@ export async function POST(request: NextRequest) {
     };
   }
 
+  const fullRequestText = [
+    `${m} ${url}`,
+    ...Object.entries(finalHeaders).map(([key, value]) => `${key}: ${value}`),
+    '',
+    requestBody,
+  ].join('\n');
+
   const supabaseClient = await createClient();
   const {
     data: { user },
@@ -96,6 +103,7 @@ export async function POST(request: NextRequest) {
       error_details: errorDetails ? JSON.stringify(errorDetails) : null,
       user_id: user?.id ?? null,
       URL: url,
+      request: fullRequestText,
     },
   ]);
 

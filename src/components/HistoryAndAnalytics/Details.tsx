@@ -1,4 +1,4 @@
-import { useRouter } from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 import { HistoryResponse } from './HistoryAndAnalytics';
 import styles from './HistoryAndAnalytics.module.scss';
@@ -10,8 +10,9 @@ type DetailsProps = {
 
 const Details: React.FC<DetailsProps> = ({ requestItem }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const closeDetails = () => {
-    router.back();
+    router.push(pathname);
   };
 
   const entries = Object.entries(requestItem).map((item) =>
@@ -23,6 +24,9 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
       <div className={styles.detailsList}>
         {entries.map((entry, index) => {
           if (entry[0] === 'id') {
+            return;
+          }
+          if (entry[0] === 'request') {
             return;
           }
           return (

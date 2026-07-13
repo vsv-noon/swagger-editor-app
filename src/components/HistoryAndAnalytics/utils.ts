@@ -1,3 +1,5 @@
+import { HistoryResponse } from './HistoryAndAnalytics';
+
 export const parseObjectKeys = ([key, value]: [string, string]): [
   string,
   string,
@@ -13,4 +15,12 @@ export const parseObjectKeys = ([key, value]: [string, string]): [
 export const trimUrl = (url: string): string => {
   const newUrl = url.split('/')[2];
   return newUrl;
+};
+
+export const sortByTimestamp = (history: HistoryResponse[]) => {
+  const sortedArray = history.sort((a, b) => {
+    return Date.parse(b.requestTimestamp) - Date.parse(a.requestTimestamp);
+  });
+
+  return sortedArray;
 };
