@@ -44,8 +44,8 @@ it('shows guest navigation on home page', async () => {
   render(<HeaderClient user={null} />);
 
   expect(screen.queryByText('Home')).not.toBeInTheDocument();
-  expect(screen.getByText('About')).toBeInTheDocument();
-  expect(screen.getByText('Sign In')).toBeInTheDocument();
-  expect(screen.getByText('Sign Up')).toBeInTheDocument();
-  expect(screen.queryByText('History')).not.toBeInTheDocument();
+  expect(screen.getByText('about')).toBeInTheDocument();
+  expect(screen.getByText('signIn')).toBeInTheDocument();
+  expect(screen.getByText('signUp')).toBeInTheDocument();
+  expect(screen.queryByText('history')).not.toBeInTheDocument();
 });
