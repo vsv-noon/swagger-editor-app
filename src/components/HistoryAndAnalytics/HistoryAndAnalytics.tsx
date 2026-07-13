@@ -8,7 +8,7 @@ import { routing } from '@/i18n/routing';
 
 import Details from './Details';
 import styles from './HistoryAndAnalytics.module.scss';
-import { sortByTimestamp, trimUrl } from './utils';
+import { sortByTimestamp } from './utils';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

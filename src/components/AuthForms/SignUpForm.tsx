@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -13,6 +15,7 @@ const SignUpForm = () => {
   const router = useRouter();
   const supabase = createClient();
   const t = useTranslations('SignForm');
+  const [error, setError] = useState('');
 
   const {
     control,
@@ -28,7 +31,7 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (data: SignUpInput) => {
-    await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -37,6 +40,11 @@ const SignUpForm = () => {
         },
       },
     });
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
     router.push('/');
     router.refresh();
   };
@@ -74,7 +82,8 @@ const SignUpForm = () => {
           label="password"
         ></AuthInput>
       </div>
-      <div className={styles.authPasswordChecker}></div>
+
+      {error ? <div className={styles.authErrorMsg}>{error}</div> : <div></div>}
 
       <button className={styles.authSubmitBtn} disabled={isSubmitting}>
         {t('signUp')}
