@@ -1,0 +1,30 @@
+:root {
+  --background: #fafafa;
+  --foreground: #fff;
+
+  --text-primary: #000;
+  --text-secondary: #666;
+
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  --button-secondary-border: #ebebeb;
+
+  --put-primary: #ffb518;
+  --get-primary: #2c9fc7;
+  --post-primary: #9abf17;
+  --delete-primary: #f92b37;
+  --put-secondary: #ffdc91;
+  --get-secondary: #98d0e4;
+  --post-secondary: #ccdf8a;
+  --delete-secondary: #fc959a;
+  --put-title: #fff8e8;
+  --post-title: #e8ffe8;
+  --get-title: #e8f9ff;
+  --delete-title: #ffe8ea;
+  --path-color: #46334f;
+  // header buttons
+  --border-radius: 1.25rem;
+  --border: solid 1px;
+  --btn-padding-y: 0.56rem;
+  --btn-padding-x: 1.56rem;
+}

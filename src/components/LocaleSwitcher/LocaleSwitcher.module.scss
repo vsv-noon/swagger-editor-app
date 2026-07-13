@@ -1,0 +1,24 @@
+.localeSwitcher {
+  margin: 0 rem(10px);
+}
+
+.select {
+  appearance: base-select;
+  padding: rem(8px) rem(20px);
+  background-color: #fff;
+  border-radius: rem(15px);
+  cursor: pointer;
+
+  &::picker(select) {
+    text-align: center;
+    appearance: base-select;
+    border-radius: rem(15px);
+    background-color: #fff;
+
+    box-shadow: 0 rem(10px) rem(25px) rgba(0, 0, 0, 0.3);
+  }
+}
+
+.select option {
+  padding: rem(8px) rem(10px);
+}

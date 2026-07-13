@@ -1,0 +1,75 @@
+$border: #2c9fc7;
+$background: #d9ebf4;
+
+.authForm {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: rem(70px);
+  border-radius: 1.25rem;
+  color: $border;
+  box-shadow: 1px 1px 4px rgb(139, 135, 135);
+}
+
+.authInputsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: rem(32px);
+}
+
+.authInput {
+  background: $background;
+  border: $border solid 1px;
+  border-radius: 0.313rem;
+  width: rem(315px);
+  height: rem(35px);
+  padding: 5px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #e1f1f5;
+  }
+  &:focus {
+    outline: none;
+    border: $border solid 2px;
+  }
+}
+
+.authSubmitBtn {
+  width: fit-content;
+  padding: 1.375rem 5.875rem;
+  border-radius: 0.625rem;
+  border: $border solid 2px;
+  color: $border;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #d5effc;
+  }
+}
+
+.authInputContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+}
+
+.authErrorMsg {
+  color: red;
+  font-size: small;
+  margin-top: 5px;
+  display: block;
+}
+
+.authPasswordChecker {
+}
+
+.authHeader {
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,68 @@
+{
+  "About": {
+    "name-n": "Nastassia Bialova",
+    "name-v": "Viacheslav Anisimov",
+    "name-k": "Katerina Halitsa",
+    "role-1": "teamlead",
+    "role-2": "developer",
+    "info": "The RS School React Course is a highly structured, community-driven online training program designed to take your frontend skills to an advanced level. Provided entirely free of charge by The Rolling Scopes School community, this course operates on a unique \"Pay it forward\" principle, where students learn from volunteer industry professionals and are later encouraged to return as mentors."
+  },
+  "AuthComponent": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signUp": "Sign Up"
+  },
+  "ErrorBoundary": {
+    "title": "Something went wrong!",
+    "button": "Try again"
+  },
+  "Footer": {
+    "about": "About"
+  },
+  "Header": {
+    "about": "About",
+    "history": "History",
+    "home": "Home",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "History": {
+    "title": "History And Analytics",
+    "text": "You haven't executed any requests yet",
+    "details": "Details:",
+    "close": "Close",
+    "detailsPointer": "details",
+    "request duration": "request duration",
+    "status code": "status code",
+    "request timestamp": "request timestamp",
+    "request method": "request method",
+    "request size": "request size",
+    "response size": "response size",
+    "error details": "error details",
+    "endpoint": "endpoint",
+    "URL": "URL"
+  },
+  "LocalSwitcher": {
+    "label": "Site Language",
+    "en": "Eng",
+    "ru": "Rus"
+  },
+  "NotFound": {
+    "404": "404 - Page Not Found",
+    "home": "Home"
+  },
+  "SignForm": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "SwaggerEditor": {
+    "title": "Smart OpenAPI Editor (Auto-detected: YAML / JSON)",
+    "textStart": "Try erasing the text and writing ",
+    "textEnd": " — The editor will instantly switch to the JSON schema, highlight syntax errors.",
+    "convertButton": "Convert to",
+    "saveButton": "Save"
+  }
+}

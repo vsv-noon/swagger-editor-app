@@ -1,0 +1,47 @@
+.swaggerEditorContainer {
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+
+  @media (orientation: landscape) {
+    width: 50%;
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+  }
+}
+
+.swaggerEditor {
+  height: 100%;
+  width: 100%;
+  border: rem(1px) solid #ddd;
+  overflow-y: auto;
+}
+
+.buttonsBlock {
+  display: flex;
+  gap: rem(20px);
+  padding: rem(20px) 0;
+}
+
+.button {
+  align-self: flex-start;
+  background-color: #fff;
+  padding: rem(8px) rem(18px);
+  border: rem(2px) solid #000;
+  border-radius: rem(5px);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    border: rem(2px) solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.button:hover {
+  background: var(--button-secondary-hover);
+}
