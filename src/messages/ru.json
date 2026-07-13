@@ -28,7 +28,19 @@
   },
   "History": {
     "title": "История и аналитика",
-    "text": "У вас еще нет выполненных запросов"
+    "text": "У вас еще нет выполненных запросов",
+    "details": "Детали:",
+    "close": "Закрыть",
+    "detailsPointer": "детали",
+    "request duration": "продолжительность запроса",
+    "status code": "код состояния",
+    "request timestamp": "метка времени запроса",
+    "request method": "метод запроса",
+    "request size": "размер запроса",
+    "response size": "размер ответа",
+    "error details": "детали ошибки",
+    "endpoint": "конечная точка",
+    "URL": "URL"
   },
   "LocalSwitcher": {
     "label": "Язык сайта",

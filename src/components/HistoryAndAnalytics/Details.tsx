@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 import { usePathname, useRouter } from '@/i18n/navigation';
 
 import { HistoryResponse } from './HistoryAndAnalytics';
@@ -11,6 +13,8 @@ type DetailsProps = {
 const Details: React.FC<DetailsProps> = ({ requestItem }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations('History');
+
   const closeDetails = () => {
     router.push(pathname);
   };
@@ -20,7 +24,7 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
   );
   return (
     <div className={styles.historyDetails}>
-      <h2>Details</h2>
+      <h2>{t('details')}</h2>
       <div className={styles.detailsList}>
         {entries.map((entry, index) => {
           if (entry[0] === 'id') {
@@ -31,7 +35,7 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
           }
           return (
             <div className={styles.detailsItem} key={index}>
-              <div>{entry[0]}:</div>
+              <div>{t(`${entry[0]}`)}:</div>
               <div>{entry[1]}</div>
             </div>
           );
@@ -39,7 +43,7 @@ const Details: React.FC<DetailsProps> = ({ requestItem }) => {
       </div>
 
       <button className={styles.detailsButton} onClick={closeDetails}>
-        Close
+        {t('close')}
       </button>
     </div>
   );

@@ -58,7 +58,7 @@ const HistoryAndAnalytics: React.FC<HistoryProps> = ({ history }) => {
               >
                 <div>{item.request}</div>
                 <div className={styles.historyDetailsPointer}>
-                  details &gt;&gt;{' '}
+                  {t('detailsPointer')} &gt;&gt;
                 </div>
               </Link>
               {details === String(item.id) && (
