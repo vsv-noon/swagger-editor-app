@@ -72,26 +72,42 @@ const HeaderClient: React.FC<HeaderProps> = ({ user }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  const path = '/' + pathname.split('/').slice(2).join('/');
 
+  const visibleItems = NAVIGATION.filter((item) => {
+    const isVisible = item.availableLinks.includes(path);
+    const isAccessed =
+      item.role === 'all' ||
+      (item.role === 'guest' && !isAuth) ||
+      (item.role === 'user' && isAuth);
+
+    return isVisible && isAccessed;
+  });
+
+  const mainLinks = visibleItems.filter((item) => item.role !== 'guest');
+
+  const authLinks = visibleItems.filter((item) => item.role === 'guest');
   return (
     <header className={`${styles.header} ${isScrolled && styles.scrolled}`}>
       <Suspense>
         <LocaleSwitcher />
       </Suspense>
       <nav className={styles.headerNav}>
-        {NAVIGATION.map((item) => {
-          const path = '/' + pathname.split('/').slice(2).join('/');
-          const isVisible = item.availableLinks.includes(path);
-          const isAccessed =
-            item.role === 'all' ||
-            (item.role === 'guest' && !isAuth) ||
-            (item.role === 'user' && isAuth);
-          return isVisible && isAccessed ? (
+        <div className={styles.mainLinks}>
+          {mainLinks.map((item) => (
             <Link key={item.path} className={styles.link} href={item.path}>
               {t(item.label)}
             </Link>
-          ) : null;
-        })}
+          ))}
+        </div>
+
+        <div className={styles.authLinks}>
+          {authLinks.map((item) => (
+            <Link key={item.path} className={styles.link} href={item.path}>
+              {t(item.label)}
+            </Link>
+          ))}
+        </div>
       </nav>
       <SignOutButton user={user}></SignOutButton>
     </header>

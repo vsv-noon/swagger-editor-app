@@ -79,5 +79,12 @@ it('handles fetch error', async () => {
     }),
   });
 
-  await expect(POST(request)).rejects.toThrow('Network error');
+  const response = await POST(request);
+
+  expect(response.status).toBe(500);
+
+  const body = await response.json();
+
+  expect(body.error.message).toBe('Failed to connect to server');
+  expect(body.error.details).toContain('Network error');
 });

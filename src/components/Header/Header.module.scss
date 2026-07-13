@@ -88,3 +88,9 @@ $scrolled-color: #cab0d64d;
   align-items: center;
   font-size: large;
 }
+
+.mainLinks,
+.authLinks {
+  display: flex;
+  gap: 1rem;
+}
