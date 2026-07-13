@@ -99,11 +99,6 @@ export async function POST(request: NextRequest) {
     },
   ]);
 
-  const { data: logs, error: logsError } = await supabaseClient
-    .from('requests_history')
-    .select('*');
-  console.log(logs);
-  console.log(logsError);
   let parsed: unknown = text;
   if (!res) {
     return NextResponse.json(
