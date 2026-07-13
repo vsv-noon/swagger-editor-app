@@ -28,7 +28,19 @@
   },
   "History": {
     "title": "History And Analytics",
-    "text": "You haven't executed any requests yet"
+    "text": "You haven't executed any requests yet",
+    "details": "Details:",
+    "close": "Close",
+    "detailsPointer": "details",
+    "request duration": "request duration",
+    "status code": "status code",
+    "request timestamp": "request timestamp",
+    "request method": "request method",
+    "request size": "request size",
+    "response size": "response size",
+    "error details": "error details",
+    "endpoint": "endpoint",
+    "URL": "URL"
   },
   "LocalSwitcher": {
     "label": "Site Language",
