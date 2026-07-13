@@ -29,6 +29,10 @@ export default function Details({ selected, server }: Props) {
     status: number;
     headers: Record<string, string>;
     body: unknown;
+    error?: {
+      message: string;
+      details?: string;
+    };
   } | null>(null);
   function resetForSelected(endpoint: Endpoint) {
     setParams({});
@@ -98,12 +102,13 @@ export default function Details({ selected, server }: Props) {
       status: data.status,
       headers: data.headers,
       body: data.body,
+      error: data.error,
     });
   }
   function generateCurl() {
     if (!selected) return '';
 
-    let url = 'http://localhost:8080/api/v3' + selected.path;
+    let url = server + selected.path;
 
     for (const p of selected.parameters.filter((p) => p.in === 'path')) {
       url = url.replace(
@@ -237,23 +242,29 @@ export default function Details({ selected, server }: Props) {
               </button>
             </>
           )}
-          {response && (
-            <>
-              <h4>Result</h4>
-
-              <div>
-                <b>Status:</b> {response.status}
+          {response &&
+            (response?.error ? (
+              <div className={styles.error}>
+                <h4>Request failed</h4>
+                <p>{response.error.message}</p>
+                <p>{response.error.details}</p>
               </div>
-
-              <h5>Headers</h5>
-
-              <pre>{JSON.stringify(response.headers, null, 2)}</pre>
-
-              <h5>Body</h5>
-
-              <pre>{JSON.stringify(response.body, null, 2)}</pre>
-            </>
-          )}
+            ) : (
+              <>
+                <h4>Result</h4>
+                <div>
+                  <b>Status:</b> {response.status}
+                </div>
+                <h5>Headers</h5>
+                <pre>{JSON.stringify(response.headers, null, 2)}</pre>
+                <h5>Body</h5>
+                <pre>
+                  {typeof response.body === 'string'
+                    ? response.body
+                    : JSON.stringify(response.body, null, 2)}
+                </pre>{' '}
+              </>
+            ))}
 
           {selected.responses.map((response) => (
             <div key={response.statusCode}>
